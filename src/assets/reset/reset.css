@@ -1,0 +1,19 @@
+@import url('https://at.alicdn.com/t/c/font_3716177_ywefgmn0xy.css?spm=a313x.7781069.1998910419.53&file=font_3716177_ywefgmn0xy.css');
+body,html{
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff62;
+
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    vertical-align: middle;
+}
