@@ -1,5 +1,5 @@
 <template>
-  <div class="userAtricle">
+  <div class="userAtricle" v-if="visible === true">
     <div class="common-layout" style="background: #f6f6f6" 
     v-for="(item,index) in myArticle.posts" :key="item.articleid">
       <!-- <el-header style="background:#FFFFFF;" >Header</el-header> -->
@@ -54,13 +54,15 @@
     </div>
     <Pageination :total="myArticle.total" @changePage="changePage"></Pageination>
   </div>
+  <empty style="margin:100px 500px" v-else></empty>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "@vue/reactivity";
 import { onBeforeMount } from "@vue/runtime-core";
+import empty from '@/components/empty/index.vue'
 import { getUserAtricle_ } from "@/utils/getUserAtricle";
-import Pageination from '@/components/Pageination/index.vue'
+import Pageination from '@/components/Pageination/index.vue' //分页
 const myArticle = ref(
     {
       total:0,
@@ -69,16 +71,19 @@ const myArticle = ref(
 )
 
 const idx = ref(0)
-const changePage = (num) => {
-  console.log(num);
-  
+const visible = ref(false)
+const changePage = (num) => { //点击页码切换
   idx.value = num - 1
-  console.log(idx.value);
-  
 }
-onBeforeMount(() => {
+onBeforeMount(async () => {
     const userId = sessionStorage.getItem('userId')
-    getUserAtricle_(userId,myArticle)
+    const myArticles = await getUserAtricle_(userId)
+
+    myArticle.value.posts = myArticles.data
+    myArticle.value.total = myArticles.data.length
+    if (myArticle.value.total != 0){
+        visible.value = true;
+    }
 })
 
 </script>

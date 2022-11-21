@@ -4,8 +4,9 @@
     :collapse="isCollapse"
     router
     text-color="#409EFF"
+    
   >
-      <el-menu-item index="#" @click="changeActive_">
+      <el-menu-item index="/homePage/userInfo" @click="changeActive_">
         <i class="iconfont icon-gerenziliao"></i>
         <span>个人资料</span>
       </el-menu-item>
@@ -14,7 +15,6 @@
         <i class="iconfont icon-chuangzuo"></i>
         <template #title>我的创作</template>
       </el-menu-item>
-
       <el-menu-item index="" @click="changeActive_">
         <i class="iconfont icon-shoucang"></i>
         <span>我的收藏</span>

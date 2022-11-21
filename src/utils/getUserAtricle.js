@@ -1,11 +1,13 @@
 import { getUserAtricle } from "@/request/tmp";
 
-const getUserAtricle_ = (data,myArticle) => {
-    getUserAtricle(data).then((res) => {
-        myArticle.value.posts = res.data.data
-        myArticle.value.total = res.data.data.length
-        console.log(res);
+const getUserAtricle_ = (data) => {
+    return new Promise((resolve,reject) => {
+        getUserAtricle(data).then((res) => {
+            if (res.data.code === '100') resolve(res.data)
+            else reject(res.data) 
+        })
     })
+    
 }
 export {
     getUserAtricle_,

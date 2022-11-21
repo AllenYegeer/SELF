@@ -43,7 +43,7 @@
                   </span>
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <profile></profile>
+                      <div>作者简介</div>
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
@@ -87,9 +87,15 @@ const load = () => {
   count.value++;
   /* getPost_(1,count.value,'学习',article)  */
 };
-onBeforeMount(() => {
-  getPost_(1, count.value, "学习", article);
+onBeforeMount(async () => {
+ getposts();
+
 });
+
+const getposts = async () => {
+    const data = await getPost_(1, count.value, "学习", article);
+    article.value.posts = data.records
+} 
 </script>
 
 <style scoped>

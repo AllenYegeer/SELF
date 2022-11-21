@@ -90,6 +90,7 @@ import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
 import { publishArticle_ } from "@/utils/publishArticle";
 import type { UploadProps } from "element-plus";
+import { success,error } from "@/utils/popup/message";
 const formSize = ref("default");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = ref({
@@ -120,7 +121,7 @@ const rules = reactive<FormRules>({
 const submitForm = async (formEl: FormInstance | undefined) => {
   //发布文章
   if (!formEl) return;
-  await formEl.validate((valid, fields) => {
+  await formEl.validate((valid) => {
     if (valid) {
       const userId = sessionStorage.getItem("userId");
       publishArticle_({
@@ -132,12 +133,13 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         userId: userId,
       });
     } else {
-      ElMessage.error("请按规定填写内容");
+       //如果有空，则发不了
+      error("请按规定填写内容")
     }
   });
 };
 const failToUpload = () => {
-  ElMessage.error("图片上传失败,请重新上传!");
+  error("图片上传失败,请重新上传!")
 };
 const resetForm = (formEl: FormInstance | undefined) => {
   //重置
@@ -151,21 +153,16 @@ const resetForm = (formEl: FormInstance | undefined) => {
 })) */
 
 const uploadSuccess: UploadProps["onSuccess"] = (response, uploadFile) => {
-  ElMessage({
-    message: "图片上传成功",
-    type: "success",
-  });
+  success("图片上传成功")
   imageUrl.value = uploadFile.response;
-  console.log(imageUrl.value);
-  
 };
 
 const beforeUpload: UploadProps["beforeUpload"] = (rawFile) => {
   if (rawFile.type !== "image/jpeg") {
-    ElMessage.error("文件的后缀名必须是JPG格式,请重新上传!");
+    error("文件的后缀名必须是JPG格式,请重新上传!")
     return false;
   } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error("文件的大小不能超过2MB,请重新上传!");
+    error("文件的大小不能超过2MB,请重新上传!")
     return false;
   }
   return true;

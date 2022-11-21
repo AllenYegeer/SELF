@@ -1,27 +1,19 @@
 import {login} from '@/request/tmp'
 import { ElMessage } from 'element-plus'
+import { success,error } from './popup/message'
 import router from '@/router'
 const login_ = (data) => {
-    login(data).then((res) => {
-        console.log(res);
-        if (res.data.code === '100'){
-            loginSuccess()
-            sessionStorage.setItem('userId', res.data.data.userid)
-            sessionStorage.setItem('userHeadPortraitUrl', res.data.data.headportait)
-        }else{
-            loginFali(res.data.msg)
-        }
+    return new Promise((resolve,reject) => {
+        login(data).then((res) => {
+            if (res.data.code === '100') {
+                sessionStorage.setItem('userId', res.data.data.userid)  //设置用户id
+                sessionStorage.setItem('userHeadPortraitUrl', res.data.data.headportait) //设置头像url
+                resolve(res.data)
+            } else {
+                reject(res.data)
+            }
+        }) 
     })
-}
-const loginSuccess = () => {
-    ElMessage({
-        message: '登陆成功.',
-        type: 'success',
-    })
-}
-
-const loginFali = (msg) => {
-    ElMessage.error(msg)
 }
 export {
     login_

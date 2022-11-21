@@ -1,8 +1,8 @@
 <template>
    <div class="homePage">
-    <Header :isActive="isActive" @changeActive="changeActive"/>
+    <Header :isActive="isActive" @changeActive="changeActive" style="position:sticky; top:0;z-index: 1;"/>
     <div class="right">
-        <MyMenu class="menu" @changeActive="changeActive"/>
+        <MyMenu class="menu" @changeActive="changeActive" style="border:1px solid red;"/>
         <div><router-view></router-view></div>
     </div>
    </div>

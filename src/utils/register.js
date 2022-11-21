@@ -1,9 +1,12 @@
 import { register } from "@/request/tmp";
+import { error, success } from "./popup/message";
 
 const register_ = (data) => {
-    register(data).then((res) => {
-        sessionStorage.setItem('userHeadPortraitUrl',res.data.data.headportait)  //设置头像的url
-        console.log(res);
+    return new Promise((resolve,reject) => {
+        register(data).then((res) => {
+            if (res.data.code === '100') resolve(res.data)
+            else reject(res.data)
+        })
     })
 }
 

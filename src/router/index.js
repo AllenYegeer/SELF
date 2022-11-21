@@ -9,10 +9,9 @@ const router = createRouter({
       第一种写法: redirect:'/login', 
       第二种写法: */
       redirect:(to) =>{
-        return {path:'/loginTo'}
+        return { path:'/home'}
       } 
     }
-    /************大作业路由******************/
     ,
     {
       path: '/home',
@@ -23,7 +22,7 @@ const router = createRouter({
         {
           path: '/homePage',
           name: 'homePage',
-          component: () => import('../views/homePage/article/index.vue')
+          component: () => import('@/views/homePage/article/index.vue')
         }
         ,
         {
@@ -37,26 +36,30 @@ const router = createRouter({
           name: 'myArticle',
           component: () => import('@/views/myAtricle/index.vue')
         },
+        {
+          path: '/homePage/userInfo',
+          name: 'homePage_userInfo',
+          component: () => import('@/views/userInfo/index.vue')
+        }
       ]
     }
     ,
     {
-      path: '/page',
-      name: 'page',
-      component: () => import('@/components/Pageination/index.vue')
-    }
-    /**************************************************************/
-    ,
-    {
       path: '/loginTo',
       name: 'loginTo',
-      component: () => import('../views/loginTo/index.vue')
+      component: () => import('@/views/login_register/loginTo/index.vue')
     }
     ,
     {
       path:'/register',
       name: 'register',
-      component: () => import('@/views/registerPage/index.vue')
+      component: () => import('@/views/login_register/registerPage/index.vue')
+    }
+    ,
+    {
+      path: '/test',
+      name: 'test',
+      component: () => import('../components/empty/index.vue')
     }
   ]
 })
