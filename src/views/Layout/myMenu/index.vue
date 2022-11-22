@@ -4,7 +4,6 @@
     :collapse="isCollapse"
     router
     text-color="#409EFF"
-    
   >
       <el-menu-item index="/homePage/userInfo" @click="changeActive_">
         <i class="iconfont icon-gerenziliao"></i>
@@ -13,16 +12,21 @@
 
       <el-menu-item index="/homePage/myArticle" @click="changeActive_">
         <i class="iconfont icon-chuangzuo"></i>
-        <template #title>我的创作</template>
+        <span>我的创作</span>
       </el-menu-item>
       <el-menu-item index="" @click="changeActive_">
         <i class="iconfont icon-shoucang"></i>
         <span>我的收藏</span>
       </el-menu-item>
 
-      <el-menu-item index="" @click="changeActive_">
+      <el-menu-item index="" @click="changeActive_" style="border-bottom:2px solid #E3E5E7">
         <i class="iconfont icon-dianzan_kuai"></i>
-        <template #title>我的点赞</template>
+        <span>我的点赞</span>
+      </el-menu-item>
+
+      <el-menu-item  index='/home' @click="loginOut">
+        <i class="iconfont icon-dingbudaohang-zhangh"></i>
+        <span>退出登陆</span>
       </el-menu-item>
   </el-menu>
 </template>
@@ -37,6 +41,9 @@ import {
 
 const emit = defineEmits(['changeActive'])
 const isCollapse = ref(false);
+const loginOut = () => {
+    
+}
 /* const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
@@ -50,7 +57,11 @@ const changeActive_ = () => {
 </script>
 <style scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 500px;
+  width: auto;
+/*   min-height: 500px; */
+}
+
+.iconfont {
+  margin-right:8px
 }
 </style>>

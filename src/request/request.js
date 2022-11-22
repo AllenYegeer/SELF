@@ -20,7 +20,17 @@ function get(url){
             }
         })
 }
+
+function put(url,data){
+    return instance.put(url, data,{
+        headers: {           //json数据
+            'accept': "application/json",
+            'Content-Type': 'application/json',
+        }
+    })
+}
 export {
     post,
-    get
+    get,
+    put
 }

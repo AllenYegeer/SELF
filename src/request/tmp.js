@@ -1,4 +1,4 @@
-import {post, get} from "./request"
+import {post, get, put} from "./request"
 
 function login(data){   //登陆
     return post('/user/login',data)
@@ -19,10 +19,31 @@ function register(data){    //注册
 function getUserAtricle(data){   //获取用户自己的帖子
     return get(`/user/article/${data}`)
 }
+
+function getUserInfo(data){  //得到用户信息
+    return get(`/user/${data}`)
+}
+
+function getUserFans(data){  //得到用户的粉丝信息
+    return get(`/user/follow/${data}`)
+}
+
+function getUserAttention(data){  //得到用户的关注
+    return get(`/user/attent/${data}`)
+}
+
+function updateUserInfo(data){  //修改用户的信息
+    return put('/user',data)
+}
+
 export {
     getPosts,
     login,
     publishArticle,
     register,
-    getUserAtricle
+    getUserAtricle,
+    getUserInfo,
+    getUserFans,
+    getUserAttention,
+    updateUserInfo
 }

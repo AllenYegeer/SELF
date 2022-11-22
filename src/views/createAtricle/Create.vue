@@ -88,7 +88,7 @@
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
-import { publishArticle_ } from "@/utils/publishArticle";
+import { publishArticle_ } from "@/utils/user/publishArticle";
 import type { UploadProps } from "element-plus";
 import { success,error } from "@/utils/popup/message";
 const formSize = ref("default");

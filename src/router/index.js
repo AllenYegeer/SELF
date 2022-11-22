@@ -39,8 +39,9 @@ const router = createRouter({
         {
           path: '/homePage/userInfo',
           name: 'homePage_userInfo',
-          component: () => import('@/views/userInfo/index.vue')
+          component: () => import('../views/userInfo/index.vue')
         }
+       
       ]
     }
     ,
@@ -59,7 +60,7 @@ const router = createRouter({
     {
       path: '/test',
       name: 'test',
-      component: () => import('../components/empty/index.vue')
+      component: () => import('../components/update/index.vue')
     }
   ]
 })

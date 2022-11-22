@@ -1,213 +1,76 @@
 <template>
-    <div style="margin-left:100px;border:1px solid red">
-        <div class="user_top">
-            <img src="http://thirdqq.qlogo.cn/g?b=sdk&k=SxqsWBQ7OMbaENiaAyfsb0g&s=140&t=1665829634" alt="">
-            <div class="top-r">
-                <span>miaomiao</span>
-                <div>
-                    <!-- 关注 -->
-                    <span>
-                        <el-button type="primary"
-                            style="width: 20px;height: 10px;background-color: #fff;border: 0;color: #000;font-size: 16px;margin-bottom: 2px;"
-                            @click="drawer_atten = true">
-                            关注
-                        </el-button>
-                        <!-- 关注列表 -->
-                        <el-drawer v-model="drawer_atten" title="关注列表" :direction="direction"
-                            :before-close="handleClose">
-                            <ul class="gfw_list">
-                                <li>
-                                    <img src="http://thirdqq.qlogo.cn/g?b=sdk&k=SxqsWBQ7OMbaENiaAyfsb0g&s=140&t=1665829634"
-                                        alt="">
-                                    <span>用户名</span>
-                                </li>
-                                <li>
-                                    <img src="http://thirdqq.qlogo.cn/g?b=sdk&k=SxqsWBQ7OMbaENiaAyfsb0g&s=140&t=1665829634"
-                                        alt="">
-                                    <span>用户名</span>
-                                </li>
-                                <li>
-                                    <img src="http://thirdqq.qlogo.cn/g?b=sdk&k=SxqsWBQ7OMbaENiaAyfsb0g&s=140&t=1665829634"
-                                        alt="">
-                                    <span>用户名</span>
-                                </li>
-                            </ul>
-                        </el-drawer>
-                        <span>45</span>
-                    </span>
-                    <!-- 粉丝 -->
-                    <span>
-                        <el-button type="primary"
-                            style="width: 20px;height: 10px;background-color: #fff;border: 0;color: #000;font-size: 16px;margin-bottom: 2px;"
-                            @click="drawer_fans = true">
-                            粉丝
-                        </el-button>
-                        <!-- 粉丝列表 -->
-                        <el-drawer v-model="drawer_fans" title="粉丝列表" :direction="direction"
-                            :before-close="handleClose">
-                            <ul class="gfw_list">
-                                <li>
-                                    <img src="http://thirdqq.qlogo.cn/g?b=sdk&k=SxqsWBQ7OMbaENiaAyfsb0g&s=140&t=1665829634"
-                                        alt="">
-                                    <span>用户名</span>
-                                </li>
-                                <li>
-                                    <img src="http://thirdqq.qlogo.cn/g?b=sdk&k=SxqsWBQ7OMbaENiaAyfsb0g&s=140&t=1665829634"
-                                        alt="">
-                                    <span>用户名</span>
-                                </li>
-                                <li>
-                                    <img src="http://thirdqq.qlogo.cn/g?b=sdk&k=SxqsWBQ7OMbaENiaAyfsb0g&s=140&t=1665829634"
-                                        alt="">
-                                    <span>用户名</span>
-                                </li>
-                            </ul>
-                        </el-drawer>
-                        <span>45</span>
-                    </span>
-                    <!-- 文章 -->
-                    <span>
-                        <el-button type="primary"
-                            style="width: 20px;height: 10px;background-color: #fff;border: 0;color: #000;font-size: 16px;margin-bottom: 2px;"
-                            @click="drawer_atic = true">
-                            文章
-                        </el-button>
-                        <!-- 文章列表 -->
-                        <el-drawer v-model="drawer_atic" title="文章列表" :direction="direction"
-                            :before-close="handleClose">
-                            <ul class="gfw_list text_list">
-                                <li>
-                                    <span>
-                                        <h3>标题</h3>
-                                    </span>
-                                    <span>简介</span>
-                                </li>
-                                <li>
-                                    <span>
-                                        <h3>标题</h3>
-                                    </span>
-                                    <span>简介</span>
-                                </li>
-                                <li>
-                                    <span>
-                                        <h3>标题</h3>
-                                    </span>
-                                    <span>简介</span>
-                                </li>
-                            </ul>
-                        </el-drawer>
-                        <span>45</span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <!-- 个人信息 -->
-        <div class="message">个人信息</div>
-        <el-form label-width="100px" :model="formLabelAlign" style="max-width: 460px">
-            <el-form-item label="用户名">
-                <el-input v-model="formLabelAlign.name" placeholder="miaomiao" :disabled="disabled"/>
-            </el-form-item>
-            <el-form-item label="性别">
-                <el-select v-model="formLabelAlign.sex" placeholder="女" :disabled="disabled">
-                    <el-option label="男" value="男" />
-                    <el-option label="女" value="女" />
-                </el-select>
-            </el-form-item>
-            <el-form-item label="年龄">
-                <el-input v-model="formLabelAlign.age" :disabled="disabled"/>
-            </el-form-item>
-            <el-form-item label="职业">
-                <el-select v-model="formLabelAlign.profession" placeholder="学生" :disabled="disabled">
-                    <el-option label="学生" value="学生" />
-                    <el-option label="老师" value="老师" />
-                    <el-option label="从业人员" value="从业人员" />
-                </el-select>
-            </el-form-item>
-            <el-form-item label="所在地">
-                <el-input v-model="formLabelAlign.region" :disabled="disabled"/>
-            </el-form-item>
-            <el-form-item>
-                <el-button typeof="primary" @click="disabled = false">修改</el-button>
-                <el-button type="primary" @click="onSubmit();disabled = true" style="margin-left: 240px;">提交</el-button>
-            </el-form-item>
-        </el-form>
-    </div>
+  <div class="userInfo" v-loading.fullscreen.lock="visible">
+    <Top :info="userInfo"></Top>
+    <Bottom class="bottom" :info="userInfo"></Bottom>
+  </div>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue'
-import { ref } from 'vue'
-import { ElMessageBox } from 'element-plus'
-
-const direction = ref('rtl')
-// 关注
-const drawer_atten = ref(false)
-// 粉丝
-const drawer_fans = ref(false)
-// 文章
-const drawer_atic = ref(false)
-// 用户名
-const disabled = ref(true)
-
-const handleClose = (done: () => void) => {
-    ElMessageBox.confirm('确定关闭？')
-        .then(() => {
-            done()
-        })
-        .catch(() => {
-            // catch error
-        })
-}
-// do not use same name with ref
-const formLabelAlign = reactive({
-    name: '',
-    region: '',
-    age: '',
-    sex: '',
-    profession: '',
-})
-
-const onSubmit = () => {
-    console.log('submit!')
-}
+<script setup>
+import Top from "./top.vue";
+import Bottom from "./bottom.vue";
+import { getUserAttention_ } from "../../utils/user/getUseAttenion";
+import { getUserFans_ } from "../../utils/user/getUserFans";
+import { getUserInfo_ } from "../../utils/user/getUserInfo";
+import { onBeforeMount, ref } from "@vue/runtime-core";
+const userId = sessionStorage.getItem("userId");
+onBeforeMount(() => {
+  visible.value = true;
+  getUserInfo();
+  getUserFans();
+  getUseAttenion();
+  setTimeout(() => {
+    visible.value = false;
+  }, 2000);
+});
+const getUserInfo = async () => {
+  const res = await getUserInfo_(userId);
+  userInfo.value.user_name = res.data.username;
+  userInfo.value.age = res.data.age;
+  userInfo.value.phoNum = res.data.phone;
+  userInfo.value.gender = res.data.gender;
+  userInfo.value.attentNub = res.data.attentNub;
+  userInfo.value.articleNub = res.data.articleNub;
+  userInfo.value.followNub = res.data.followNub;
+  userInfo.value.headportait = res.data.headportait;
+  userInfo.value.address = res.data.address;
+  userInfo.value.profession = res.data.profession;
+  /* console.log(res.data); */
+};
+const getUserFans = async () => {
+  const res = await getUserFans_(userId);
+  userFans.value = res.data;
+  /* console.log(userFans.value); */
+};
+const getUseAttenion = async () => {
+  const res = await getUserAttention_(userId);
+  userAttention.value = res.data;
+  /* console.log( userAttention.value); */
+};
+const userInfo = ref({
+  user_name: "",
+  age: 18,
+  phoNum: "",
+  profession: "",
+  gender: "",
+  attentNub: 0,
+  articleNub: 0,
+  followNub: 0,
+  headportait: "",
+  address: "",
+});
+const userFans = ref([]);
+const userAttention = ref([]);
+const visible = ref(true);
 </script>
 
-<style>
-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    vertical-align: middle;
+<style scoped>
+.userInfo {
+  width: 70vw;
 }
-
-.user_top {
-    display: flex;
+.bottom {
+  /*  position: absolute;
+      left:500px;
+      width: 500px; */
+  transform: translateX(200px);
 }
-
-.top-r {
-    margin-left: 10px;
-}
-
-.top-r div>span {
-    margin-right: 10px;
-}
-
-.message {
-    margin-top: 30px;
-}
-
-.el-form {
-    padding: 20px;
-}
-/* 关注列表 */
-.gfw_list li{
-    margin-bottom: 20px;
-}
-.gfw_list li span{
-    margin-left: 10px;
-}
-.text_list li span{
-    margin-left: 0;
-}
-
 </style>

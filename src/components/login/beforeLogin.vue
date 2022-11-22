@@ -1,14 +1,13 @@
 <template>
     <div class="beforeLogin">
-        <div class="bt" style="margin-top:10px">
+        <!-- <div class="bt" style="margin-top:10px"> -->
             <el-button type="primary" @click="changeLoginVisible">立 即 登 陆</el-button>
             <el-dialog
                 v-model="visibleLogin"
                 title="登陆"
                 :before-close="changeLoginVisible"
                 width="50%"
-                append-to-body="true"
-            >
+                append-to-body="true">
                 <Login @changeVisible="changeLoginVisible"></Login>
             </el-dialog>
             <el-dialog
@@ -20,7 +19,7 @@
             >
                 <Register @changeVisible="changeRegisterVisible"></Register>
             </el-dialog>
-        </div>
+        <!-- </div> -->
         <div class="footer">
             首次使用？<span class="register" @click="changeRegisterVisible">点我注册</span>
         </div>

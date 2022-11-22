@@ -27,7 +27,7 @@
         </li>
         <li @click="changeActive_(5)">
           <router-link to="#" :class="{ active: isActive == 5 }"
-            >离职</router-link
+            >求职</router-link
           >
         </li>
       </ul>
@@ -35,16 +35,24 @@
     <div class="hd-search">
       <el-input v-model="search" placeholder="搜索" class="input-with-select">
         <template #append>
-          <el-button :icon="Search" circle />
+          <el-button type="primary" :icon="Search" circle />
         </template>
       </el-input>
     </div>
     <!-- 投稿 -->
     <div class="article">
       <router-link to="/homePage/createArticle">
-        <el-button type="primary" :icon="Edit" circle @click="changeActive_(0)">
-        </el-button
-      ></router-link>
+        <el-tooltip
+          effect="light"
+          content="创作"
+          
+        >
+          <el-button type="primary" :icon="Edit" circle @click="changeActive_(0)">
+          </el-button>
+        </el-tooltip
+          
+        >
+      </router-link>
     </div>
     <!-- 个人中心 -->
     <div class="user">
@@ -54,7 +62,11 @@
         <template #dropdown>
           <el-dropdown-menu
             style="width:100%">
-            <beforeLoin v-if="visBeforLogin" @changeVisBeforLogin="changeVisBeforLogin"></beforeLoin>
+            <beforeLogin v-if="visBeforLogin" @changeVisBeforLogin="changeVisBeforLogin"></beforeLogin>
+          </el-dropdown-menu>
+          <el-dropdown-menu
+            style="width:100%">
+            <afterLogin v-if="!visBeforLogin" @changeVisBeforLogin="changeVisBeforLogin" @changeActive="changeActive_"></afterLogin>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -64,7 +76,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
 import { Edit, Search } from "@element-plus/icons-vue";
-import beforeLoin from '../../../components/login/beforeLogin.vue';
+import beforeLogin from '../../../components/login/beforeLogin.vue';
 import afterLogin from '../../../components/login/afterLogin.vue'
 const select = ref("");
 const search = ref("");
@@ -157,8 +169,6 @@ a:hover {
 
 .hd-search {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   height: 35px;
   overflow: hidden;
   border-radius: 20px;

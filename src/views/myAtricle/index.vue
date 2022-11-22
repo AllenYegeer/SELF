@@ -6,7 +6,7 @@
       <el-container v-if="index  == idx">
         <!--  <el-aside width="20%" style="background:#FFFFFF;">Aside</el-aside> -->
         <div>
-          <el-main style="margin: 20px; width: 80vw; background: #ffffff">
+          <el-main style="margin:20px 30px; width: 95vw; background: #ffffff">
             <div style="min-height: 500px">
               <h3>{{item.head}}</h3>
               <el-divider /><!--这里是分割线-->
@@ -61,7 +61,7 @@
 import { ref } from "@vue/reactivity";
 import { onBeforeMount } from "@vue/runtime-core";
 import empty from '@/components/empty/index.vue'
-import { getUserAtricle_ } from "@/utils/getUserAtricle";
+import { getUserAtricle_ } from "@/utils/user/getUserAtricle";
 import Pageination from '@/components/Pageination/index.vue' //分页
 const myArticle = ref(
     {

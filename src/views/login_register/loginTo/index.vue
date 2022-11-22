@@ -78,6 +78,7 @@ const loginSuccess = () => {
           login_info[key] = ''
     }))
     success('登陆成功')
+    router.push('/home')
     emit('changeVisible',1)
     /* router.push({ path: '/homepage', replace: true }) */
 }

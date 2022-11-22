@@ -166,6 +166,7 @@ const upLoadInfo = async () => {
       success('注册成功')
       sessionStorage.setItem('userHeadPortraitUrl',result.data.headportait)
       sessionStorage.setItem('userId', result.data.userid)
+      router.push('/home')
       emit('changeVisible',1)
       Object.keys(user_info.value).forEach((key) => {
         user_info.value[key] = ''

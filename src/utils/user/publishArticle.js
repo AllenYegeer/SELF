@@ -1,6 +1,6 @@
 import { publishArticle } from '@/request/tmp'
 import { ElMessage } from 'element-plus'
-import { success,error } from './popup/message'
+import { success,error } from '../popup/message'
 const publishArticle_ = (data) => {
     publishArticle(data).then((res) => {
         if (res.data.code === '100'){

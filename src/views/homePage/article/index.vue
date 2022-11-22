@@ -77,7 +77,7 @@
 <script lang="ts" setup>
 import { ref } from "@vue/reactivity";
 import { onBeforeMount } from "@vue/runtime-core";
-import { getPost_ } from "@/utils/getPosts";
+import { getPost_ } from "@/utils/user/getPosts";
 const article = ref({
   posts: [],
 });
