@@ -1,58 +1,96 @@
 <template>
-  <el-form :model="form" :rules="rules" ref="form" label-width="150px">
+  <el-form :model="info" label-width="150px">
     <div class="update">
       <div class="left">
-        <el-form-item label="账号：" prop="password">
-          <el-input v-model="form.password" disabled></el-input>
+        <el-form-item label="手机号：">
+          <el-input  type="text" v-model="info.phoneNum" disabled></el-input>
         </el-form-item>
-        <el-form-item label="昵称：" prop="nickname">
-          <el-input v-model="form.nickname"></el-input>
+        <el-form-item label="昵称：">
+          <el-input v-model="info.user_name"></el-input>
         </el-form-item>
-        <el-form-item label="年龄：" prop="age">
-          <el-input v-model.number="form.age"></el-input>
+        <el-form-item label="年龄：">
+          <el-input v-model.number="info.age"></el-input>
         </el-form-item>
-        <el-form-item label="性别：" prop="sex">
-            <span style="margin-right:5px">男</span>
-          <el-switch v-model="f"  style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"/>
-            <span style="margin-left:5px">女</span>
+        <el-form-item label="性别：">
+          <span style="margin-right: 5px">男</span>
+          <el-switch
+            v-model="info.sex"
+            style="
+              --el-switch-on-color: #13ce66;
+              --el-switch-off-color: #13ce66;
+            "/>
+          <span style="margin-left: 5px">女</span>
         </el-form-item>
       </div>
       <div class="right">
-        <el-form-item label="密码：" prop="account">
-          <el-input v-model="form.account"></el-input>
+        <el-form-item label="密码：" required>
+          <el-input
+            v-model="info.password"
+            type="password"
+            show-password
+          ></el-input>
         </el-form-item>
-        <el-form-item label="地区：" prop="area">
-          <el-input v-model="form.area"></el-input>
+        <el-form-item label="地区：">
+          <el-input v-model="info.address"></el-input>
         </el-form-item>
-        <el-form-item label="职业：" prop="work">
-          <el-input v-model="form.work"></el-input>
+        <el-form-item label="职业：">
+          <el-input v-model="info.profession"></el-input>
         </el-form-item>
       </div>
     </div>
   </el-form>
-  <span class="dialog-footer">
-    <el-button @click="handleClose">取 消</el-button>
+  <span class="footer">
+    <el-button @click="changeVisible_">取 消</el-button>
     <el-button type="primary" @click="submit">提 交</el-button>
   </span>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "@vue/reactivity";
-import { success,error } from "@/utils/popup/message";
+import { success, error,warn} from "@/utils/popup/message";
 import type { UploadProps } from "element-plus";
-const imageUrl = ref()
-const failToUpload = () => {
-  error("图片上传失败,请重新上传!")
-};
-const uploadSuccess: UploadProps["onSuccess"] = (response, uploadFile) => {
-  success("图片上传成功")
-  imageUrl.value = uploadFile.response;
-};
-const form = ref({
-    sex:false,
-});
-
-const f = ref(false)
+import {updateUserInfo_} from '@/utils/user/updateUserInfo'
+const imageUrl = ref();
+const emit = defineEmits(['changeVisible']);
+const props = defineProps(['userInfo'])
+const userId = sessionStorage.getItem('userId')
+const info = ref(
+  {
+  phoneNum: props.userInfo.phoNum,
+  user_name: props.userInfo.user_name,
+  age: props.userInfo.age,
+  sex: (props.userInfo.gender === '男' ? false : true),
+  password: props.userInfo.password,
+  address: props.userInfo.address,
+  profession: props.userInfo.profession,
+  }
+);
+const changeVisible_ = () => {  //改变修改信息窗口的可见性
+  emit('changeVisible')
+}
+const submit = async () => {   //提交修改信息
+    if(info.value.password == ''){
+      warn('请填写密码')
+    }else{
+      const res = await updateUserInfo_(
+      {
+        username: info.value.user_name,
+        age: info.value.age,
+        gender: (info.value.sex === false ? '男' : '女'),
+        password: info.value.password,
+        address: info.value.address,
+        profession: info.value.profession,
+        userid: userId
+      }
+    )
+    if (res.code === '100'){
+      success('修改成功')
+      changeVisible_()
+    }else{
+      error(res.msg)
+    }
+    }
+}
 </script>
 
 <style scoped>
@@ -62,32 +100,7 @@ const f = ref(false)
 .right {
   margin-right: 100px;
 }
-.avatar-uploader .avatar {
-  /* width: 150px;
-  height: 150px; */
-  display: block;
-}
-</style>
-
-<style>
-.avatar-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
-}
-
-.el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 150px;
-  height: 150px;
-  text-align: center;
+.footer {
+  margin-left: 250px;
 }
 </style>

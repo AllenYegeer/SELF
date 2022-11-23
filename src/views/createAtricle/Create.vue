@@ -91,6 +91,7 @@ import { ElMessage } from "element-plus";
 import { publishArticle_ } from "@/utils/user/publishArticle";
 import type { UploadProps } from "element-plus";
 import { success,error } from "@/utils/popup/message";
+import store from "../../store";
 const formSize = ref("default");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = ref({
@@ -123,7 +124,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid) => {
     if (valid) {
-      const userId = sessionStorage.getItem("userId");
+      const userId = sessionStorage.getItem('userId')
       publishArticle_({
         cover: imageUrl.value,
         head: ruleForm.value.head,

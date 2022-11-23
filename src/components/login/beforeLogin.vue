@@ -35,7 +35,6 @@ import router from '@/router';
     const visibleRegister = ref(false)  //注册窗口的可见
     const changeRegisterVisible = (num) => {   //改变注册窗口
         visibleRegister.value = !visibleRegister.value
-        console.log(1111111);
         sendToparent(num)
     }
 

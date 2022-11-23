@@ -43,9 +43,7 @@
     <div class="article">
       <router-link to="/homePage/createArticle">
         <el-tooltip
-          effect="light"
-          content="创作"
-          
+          content="创作" 
         >
           <el-button type="primary" :icon="Edit" circle @click="changeActive_(0)">
           </el-button>
@@ -56,7 +54,7 @@
     </div>
     <!-- 个人中心 -->
     <div class="user">
-      <el-dropdown style="width: 100%; height: 100%">
+      <!-- <el-dropdown style="width: 100%; height: 100%">
         <img :src="imgUrl" alt="" v-if="!visBeforLogin" />
         <span v-else class="login">登陆</span>
         <template #dropdown>
@@ -69,26 +67,26 @@
             <afterLogin v-if="!visBeforLogin" @changeVisBeforLogin="changeVisBeforLogin" @changeActive="changeActive_"></afterLogin>
           </el-dropdown-menu>
         </template>
-      </el-dropdown>
+      </el-dropdown> -->
+      <profile @changeActive="changeActive_"></profile> <!-- 头像信息 -->
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
 import { Edit, Search } from "@element-plus/icons-vue";
-import beforeLogin from '../../../components/login/beforeLogin.vue';
-import afterLogin from '../../../components/login/afterLogin.vue'
+import profile from '@/components/profile/index.vue'
 const select = ref("");
 const search = ref("");
-const imgUrl = ref("");
-const visBeforLogin = ref(true);
+/* const imgUrl = ref("");
+const visBeforLogin = ref(true); */
 const props = defineProps(["isActive"]);
 const emit = defineEmits(["changeActive"]);
 const isActive = computed(() => props.isActive);
 const changeActive_ = (num) => {
   emit("changeActive", num);
 };
-const changeVisBeforLogin = () => {
+/* const changeVisBeforLogin = () => {
   visBeforLogin.value = !visBeforLogin.value;
   refresh()
 };
@@ -101,7 +99,7 @@ const refresh = () => {
     imgUrl.value = url;
     visBeforLogin.value = false
   }
-}
+} */
 </script>
 
 <style scoped>
@@ -113,7 +111,7 @@ const refresh = () => {
   height: 50px;
   background: #FFFFFF;
 }
-.login {
+/* .login {
   display: block;
   width: 100%;
   height: 100%;
@@ -128,15 +126,15 @@ const refresh = () => {
   font-family: PingFang SC, HarmonyOS_Medium, Helvetica Neue, Microsoft YaHei,
     sans-serif;
   font-weight: 700;
-}
+} */
 .active {
   border-bottom: 4px solid #056de8;
   color: #121212;
 }
-.user img {
+/* .user img {
   height: 100%;
   width: 100%;
-}
+} */
 .h-nav {
   margin-right: 50px;
 }

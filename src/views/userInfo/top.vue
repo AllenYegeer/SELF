@@ -63,10 +63,12 @@ import { success, error } from "@/utils/popup/message";
 import type { UploadProps } from "element-plus";
 import { onBeforeMount } from "@vue/runtime-core";
 import {updateUserInfo_} from '@/utils/user/updateUserInfo'
+import router from "@/router";
+import store from "../../store";
 const props = defineProps(["info"]);
 const imageUrl = ref();
 onBeforeMount(() => {
-  imageUrl.value = sessionStorage.getItem('userHeadPortraitUrl')
+  imageUrl.value = sessionStorage.getItem('imgUrl')
 })
 const failToUpload = () => {
   error("图片上传失败,请重新上传!");
@@ -87,9 +89,10 @@ const updateHeadPortrait = async (data,url) => {
   const res = await updateUserInfo_(data)
   if (res.code === '100'){
     imageUrl.value = url;
-    sessionStorage.setItem('userHeadPortraitUrl',url)
+    sessionStorage.setItem('imgUrl',url)
+    store.commit('updateUrl',url)
     success('头像修改成功')
-    /* location.reload(); */
+    //router.push('/homePage/userInfo')
   } 
   else error('头像修改失败')
 }

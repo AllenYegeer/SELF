@@ -1,5 +1,5 @@
 <template>
-  <div class="userInfo" v-loading.fullscreen.lock="visible">
+  <div class="userInfo" v-loading.fullscreen.lock="loadingVisible">
     <Top :info="userInfo"></Top>
     <Bottom class="bottom" :info="userInfo"></Bottom>
   </div>
@@ -12,14 +12,16 @@ import { getUserAttention_ } from "../../utils/user/getUseAttenion";
 import { getUserFans_ } from "../../utils/user/getUserFans";
 import { getUserInfo_ } from "../../utils/user/getUserInfo";
 import { onBeforeMount, ref } from "@vue/runtime-core";
-const userId = sessionStorage.getItem("userId");
+import store from "../../store";
+const userId = sessionStorage.getItem('userId')
+const loadingVisible = ref(true);  //加载的可见性
 onBeforeMount(() => {
-  visible.value = true;
+  loadingVisible.value = true;
   getUserInfo();
   getUserFans();
   getUseAttenion();
   setTimeout(() => {
-    visible.value = false;
+    loadingVisible.value = false;
   }, 2000);
 });
 const getUserInfo = async () => {
@@ -34,22 +36,22 @@ const getUserInfo = async () => {
   userInfo.value.headportait = res.data.headportait;
   userInfo.value.address = res.data.address;
   userInfo.value.profession = res.data.profession;
-  /* console.log(res.data); */
+  userInfo.value.password = res.data.password;
 };
 const getUserFans = async () => {
   const res = await getUserFans_(userId);
   userFans.value = res.data;
-  /* console.log(userFans.value); */
 };
 const getUseAttenion = async () => {
   const res = await getUserAttention_(userId);
   userAttention.value = res.data;
-  /* console.log( userAttention.value); */
+
 };
 const userInfo = ref({
   user_name: "",
   age: 18,
   phoNum: "",
+  password:'',
   profession: "",
   gender: "",
   attentNub: 0,
@@ -60,7 +62,6 @@ const userInfo = ref({
 });
 const userFans = ref([]);
 const userAttention = ref([]);
-const visible = ref(true);
 </script>
 
 <style scoped>

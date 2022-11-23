@@ -3,14 +3,14 @@
     <el-card>
       <el-descriptions class="margin-top" title="简介" :column="2" border>
         <template #extra>
-          <el-button type="primary" circle @click="changeVisible"><el-icon><EditPen /></el-icon></el-button>
+          <el-button type="primary" circle @click="changeVisible"><el-icon><EditPen/></el-icon></el-button>
         </template>
         <el-descriptions-item>
           <template #label> 
             <i class="iconfont icon-xiugaitouxiang"></i>
             头像
           </template>
-          <img class="img" :src="props.info.headportait" alt="" />
+          <img class="img" :src="imgurl ||imgUrl" alt="" />
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
@@ -82,12 +82,12 @@
             个性签名
           </template>
         </el-descriptions-item> -->
-        <el-descriptions-item>
+       <!--  <el-descriptions-item>
           <template #label>
             <i class="iconfont icon-register"></i>
             注册日期
           </template>
-        </el-descriptions-item>
+        </el-descriptions-item> -->
       </el-descriptions>
     </el-card>
     <el-dialog
@@ -96,17 +96,20 @@
       :before-close="changeVisible"
       append-to-body="true"
     >
-    <updata></updata>
+    <updata @changeVisible="changeVisible" :userInfo="props.info"></updata>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import updata from '@/components/update/index.vue'
+import store  from '../../store';
 const props = defineProps(['info'])
 const visible = ref(false)
-const changeVisible = () =>{
+const imgUrl = ref(computed(() => sessionStorage.getItem('imgUrl')))
+const imgurl = ref(computed (() => store.state.url))
+const changeVisible = () =>{  //修改个人信息修改界面的可见性
   visible.value = !visible.value
 }
 </script>

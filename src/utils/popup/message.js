@@ -6,11 +6,18 @@ const success = (msg) => {
         type: 'success',
     })
 }
-
+const warn = (msg) =>{
+    ElMessage({
+        message: msg,
+        type: 'warning',
+    })
+}
 const error = (msg) => {
     ElMessage.error(msg)
 }
+
 export{
     success,
-    error
+    error,
+    warn
 }

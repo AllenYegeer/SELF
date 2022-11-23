@@ -97,7 +97,7 @@ import type { FormInstance } from "element-plus";
 import { register_ } from "@/utils/register";
 import { error, success } from "@/utils/popup/message";
 import router from "@/router";
-
+import store from "../../../store";
 const emit = defineEmits(['changeVisible'])
 const ruleFormRef = ref<FormInstance>();
 const user_info = ref({
@@ -164,8 +164,8 @@ const upLoadInfo = async () => {
   });
   if (result.code === '100'){
       success('注册成功')
-      sessionStorage.setItem('userHeadPortraitUrl',result.data.headportait)
-      sessionStorage.setItem('userId', result.data.userid)
+      sessionStorage.setItem('userId', result.data.userid)  //设置用户id
+      sessionStorage.setItem('imgUrl', result.data.headportait) //设置头像url
       router.push('/home')
       emit('changeVisible',1)
       Object.keys(user_info.value).forEach((key) => {
