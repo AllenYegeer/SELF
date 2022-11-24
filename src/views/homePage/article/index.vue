@@ -60,7 +60,7 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu style="width:285px">
-                    <introuction  ref="child"></introuction>
+                    <introuction  ref="child" :userAttenionId="userAttenionId" :id="item.user.userid"></introuction>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -77,11 +77,13 @@
 import { ref } from "vue";
 import { onBeforeMount } from "@vue/runtime-core";
 import { getPost_ } from "@/utils/user/getPosts";
+import {getUserAttention_} from '@/utils/user/getUseAttenion'
 import introuction from "../../../components/introduction/index.vue";
 const article = ref({
   posts: [],
 });
-
+const userId = sessionStorage.getItem('userId')
+const userAttenionId = ref([])
 const count = ref(2);
 const child = ref()  //子组件
 const load = () => {
@@ -89,15 +91,24 @@ const load = () => {
   /* getPost_(1,count.value,'学习',article)  */
 };
 onBeforeMount(async () => {
-  getposts();   
+    getUserAttentionId()
+    getposts();   
 });
 const getposts = async () => {  //得到帖子
   const data = await getPost_(1, count.value, "学习", article);
   article.value.posts = data.records; 
 }; 
+const getUserAttentionId = async () => {  //得到用户的关注用户Id
+  if (userId){
+    console.log(1111);
+    const {data:res} = await getUserAttention_(userId)
+    userAttenionId.value = res.map((item) => {
+      return item.userid
+    })
+  }
+}
 const showInfo = (id,idx) => {   //悬停用户头像显示用户的简介信息
   child.value[idx].getInfo(id)  //因为有多个子组件,idx用区分每个子组件的事件
-
 }
 </script>
 

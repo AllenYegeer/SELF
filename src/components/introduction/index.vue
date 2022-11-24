@@ -1,6 +1,5 @@
 <template>
-  <div class="loading" target="document.querySelector(.loading)" v-if="!visible" v-loading="!visible"></div>
-  <div class="PersonTop" v-else>
+  <div class="PersonTop">
     <div class="header">
       <div class="img">
           <img
@@ -37,7 +36,14 @@
       </div>
     </div>
     <div class="footer">
-        <el-button type="primary" @click="f"><el-icon style="margin-right:10px"><Plus /></el-icon>关注他</el-button>
+        <el-button type="primary" @click="attenion" v-if="props.userAttenionId.indexOf(props.id) === -1">
+          <el-icon><Plus /></el-icon>
+          <span>关注</span>
+        </el-button>
+        <el-button v-else type="info" @click="attenion">
+          <el-icon><Select /></el-icon>
+          <span>已关注</span>
+        </el-button>
         <el-button type="success" ><span style="margin-right:10px"><i class="iconfont icon-sixin"></i></span>私信他</el-button>
     </div>
   </div>
@@ -47,7 +53,10 @@
 import {getUserInfo_} from '@/utils/user/getUserInfo'
 import { onBeforeMount, onMounted, ref} from '@vue/runtime-core'
 import { defineExpose } from 'vue'
-const props = defineProps(['userId'])
+import {attent_} from '@/utils/user/attent'
+import {success,error,warn} from '@/utils/popup/message'
+const props = defineProps(['userAttenionId','id'])
+const userId = sessionStorage.getItem('userId')
 const userInfo = ref()
 const visible = ref()
 const info = ref(
@@ -59,11 +68,25 @@ const info = ref(
     followNub:''
   }
 )
+const attenion = async () => {   
+  if (userId){
+    const idx = props.userAttenionId.indexOf(props.id)
+    if (idx == -1){
+        const res = await attent_(userId,1,props.id)  //关注
+        if (res.code === '100'){
+          props.userAttenionId.push(props.id)
+        }
+    }else{
+        const res = await attent_(userId,-1,props.id) //取消关注
+        if (res.code === '100'){
+          props.userAttenionId.splice(idx,1)
+        }
+    }
+  }else{
+    error('请先登陆')
+  }
+}
 const getInfo = async (id) =>{  //得到用户信息
-  visible.value = false
-  setTimeout(() => {
-    visible.value = true
-  },1500);
   const {data:res} = await getUserInfo_(id)
   info.value.headportait = res.headportait
   info.value.username = res.username

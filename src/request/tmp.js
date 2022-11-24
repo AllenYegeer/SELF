@@ -36,6 +36,9 @@ function updateUserInfo(data){  //修改用户的信息
     return put('/user',data)
 }
 
+function attent(userId,isAttent,id){
+    return get(`/user/attent/${userId}/${id}/${isAttent}`)
+}
 export {
     getPosts,
     login,
@@ -45,5 +48,6 @@ export {
     getUserInfo,
     getUserFans,
     getUserAttention,
-    updateUserInfo
+    updateUserInfo,
+    attent
 }

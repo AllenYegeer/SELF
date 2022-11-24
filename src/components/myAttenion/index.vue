@@ -44,7 +44,7 @@ import { onMounted, ref } from "@vue/runtime-core";
 const userAttentions = ref([]);
 const userId = sessionStorage.getItem("userId");
 const getUserFans = async () => {//得到用户的粉丝
-  const { data: res } = await getUserAttention_(1);
+  const { data: res } = await getUserAttention_(userId);
   userAttentions.value = res
 };
 
