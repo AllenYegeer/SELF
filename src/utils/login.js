@@ -9,8 +9,10 @@ const login_ = (data) => {
             if (res.data.code === '100') {
                 sessionStorage.setItem('userId', res.data.data.userid)  //设置用户id
                 sessionStorage.setItem('imgUrl', res.data.data.headportait) //设置头像url
+                success('登陆成功')
                 resolve(res.data)
             } else {
+                error(res.data.msg)
                 reject(res.data)
             }
         }) 

@@ -77,7 +77,6 @@ const loginSuccess = () => {
     Object.keys(login_info).forEach((key => {
           login_info[key] = ''
     }))
-    success('登陆成功')
     router.push('/home')
     emit('changeVisible',1)
 }

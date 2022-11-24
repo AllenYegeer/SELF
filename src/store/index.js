@@ -4,7 +4,8 @@ const store = createStore({
     state(){ // 通过 $store 访问 store中的实例  如: $store.state.count 值为1
         return {
             url:'',
-            userID:''
+            userID:'',
+            userInfo:''
         }
     },
     mutations:{  //mutations是对象,改变state中的数据
@@ -16,6 +17,10 @@ const store = createStore({
         },
         updateUserId(state,id){   //修改id
             state.userID = id
+        },
+        setUserInfo(state,info){
+            state.userInfo = info
+            console.log(state.userInfo);
         }
     },
     //通过 (srcipt中使用) this.$store / (标签中使用)$store.commit('addCount',参数) 调用addCount方法;

@@ -9,7 +9,7 @@ const router = createRouter({
       第一种写法: redirect:'/login', 
       第二种写法: */
       redirect:(to) =>{
-        return { path:'/home'}
+        return { path:'/enterTOHome'}
       } 
     }
     ,
@@ -39,9 +39,20 @@ const router = createRouter({
         {
           path: '/homePage/userInfo',
           name: 'homePage_userInfo',
-          component: () => import('../views/userInfo/index.vue')
+          component: () => import('../views/userInfo/index.vue'),
+          children:[
+              {
+                path: '/homePage/userInfo/userFans',
+                name: 'userFans',
+                component: () => import('@/components/myFans/index.vue')
+              },
+              {
+                path: '/homePage/userInfo/userAttenion',
+                name: 'userAttenion',
+                component: () => import('@/components/myAttenion/index.vue')
+              }
+          ]
         }
-       
       ]
     }
     ,
@@ -58,9 +69,15 @@ const router = createRouter({
     }
     ,
     {
-      path: '/test',
+      path: '/enterTOHome',   //轮播图
+      name: 'enterTOHome',
+      component: () => import('../components/sideShow/index.vue')
+    }
+    ,
+    {
+      path:'/test',
       name: 'test',
-      component: () => import('../components/update/index.vue')
+      component: () => import('../components/myFans/index.vue')
     }
   ]
 })

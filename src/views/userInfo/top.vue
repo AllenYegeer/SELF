@@ -26,31 +26,26 @@
           <img src="@/assets/logo/v.png" class="user-v-img" />
           <span class="user-v-font">优质媒体作者</span>
         </div>
-        <!-- <div class="user_anniu">
-          <el-button
-            v-if="this.$route.params.id != this.$store.state.id"
-            @click="follow"
-            type="primary"
-            size="medium"
-            icon="el-icon-check"
-            v-text="
-              isfollowid.indexOf(this.$route.params.id) > -1 ? '已关注' : '关注'
-            "
-          ></el-button>
-        </div> -->
+        <el-button  v-if="button_visiable" link @click="changeVisible(2)"><el-icon style="margin-right:5px"><ArrowDownBold /></el-icon>个人信息</el-button>
       </div>
       <div class="user_num">
-        <div style="cursor: pointer" @click="f">
-          <div class="num_number">{{ props.info.followNub }}</div>
-          <span class="num_text">粉丝</span>
+        <div @click="changeVisible(1)">
+          <router-link to='/homePage/userInfo/userFans'>
+            <div class="num_number">{{ props.info.followNub }}</div>
+            <span class="num_text">粉丝</span>
+          </router-link>
         </div>
-        <div style="cursor: pointer" @click="f">
-          <div class="num_number">{{ props.info.attentNub }}</div>
-          <span class="num_text">关注</span>
+        <div @click="changeVisible(1)">
+          <router-link to="/homePage/userInfo/userAttenion">
+            <div class="num_number">{{ props.info.attentNub }}</div>
+            <span class="num_text">关注</span>
+          </router-link>
         </div>
         <div>
-          <div class="num_number">{{ props.info.articleNub }}</div>
-          <span class="num_text">作品</span>
+          <router-link to='/homePage/myArticle'>
+            <div class="num_number">{{ props.info.articleNub }}</div>
+            <span class="num_text">作品</span>
+          </router-link>
         </div>
       </div>
     </div>
@@ -66,7 +61,9 @@ import {updateUserInfo_} from '@/utils/user/updateUserInfo'
 import router from "@/router";
 import store from "../../store";
 const props = defineProps(["info"]);
+const emit = defineEmits(['changeVisible'])
 const imageUrl = ref();
+const button_visiable = ref(false)
 onBeforeMount(() => {
   imageUrl.value = sessionStorage.getItem('imgUrl')
 })
@@ -95,6 +92,12 @@ const updateHeadPortrait = async (data,url) => {
     //router.push('/homePage/userInfo')
   } 
   else error('头像修改失败')
+}
+
+const changeVisible = (num) => {
+    if(num == 1) button_visiable.value = true //num == 1 不显示个人信息 
+    else button_visiable.value = false   //否则显示个人信息
+    emit('changeVisible',num)
 }
 </script>
 
@@ -138,11 +141,10 @@ const updateHeadPortrait = async (data,url) => {
   font-size: 15px;
   color: #00c3ff;
 }
-.user_qianming {
-  font-size: 14px;
-  color: #999;
+.el-button {
+  color: #00c3ff;
+  margin-top: 20px;
 }
-
 .user_num {
   width: 40%;
   height: 100%;
@@ -157,6 +159,7 @@ const updateHeadPortrait = async (data,url) => {
   width: 80px;
   height: 40px;
   line-height: 20px;
+  cursor: pointer;
 }
 
 .num_text {
@@ -166,10 +169,6 @@ const updateHeadPortrait = async (data,url) => {
 .num_number {
   font-size: 20px;
   color: #333;
-}
-.el-menu-item > span {
-  font-size: 16px;
-  color: #999;
 }
 </style>
 <style>

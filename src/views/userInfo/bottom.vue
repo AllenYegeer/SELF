@@ -96,7 +96,7 @@
       :before-close="changeVisible"
       append-to-body="true"
     >
-    <updata @changeVisible="changeVisible" :userInfo="props.info"></updata>
+    <updata @changeInfo="changeInfo" @changeVisible="changeVisible" :userInfo="props.info"></updata>
     </el-dialog>
   </div>
 </template>
@@ -106,11 +106,16 @@ import { computed, ref } from 'vue';
 import updata from '@/components/update/index.vue'
 import store  from '../../store';
 const props = defineProps(['info'])
-const visible = ref(false)
+const emit = defineEmits(['changeInfo'])
+const visible = ref(false)  //个人信息修改界面的可见性
 const imgUrl = ref(computed(() => sessionStorage.getItem('imgUrl')))
 const imgurl = ref(computed (() => store.state.url))
 const changeVisible = () =>{  //修改个人信息修改界面的可见性
   visible.value = !visible.value
+}
+
+const changeInfo = (info) =>{
+  emit('changeInfo',info)
 }
 </script>
 

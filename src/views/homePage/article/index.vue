@@ -3,7 +3,7 @@
     class="common-layout"
     style="background: #f6f6f6; overflow: auto"
     v-infinite-scroll="load"
-    v-for="item in article.posts"
+    v-for="(item,index) in article.posts"
     :key="item.articleid"
   >
     <el-container>
@@ -37,25 +37,14 @@
             </el-descriptions-item>
 
             <el-descriptions-item label="" class="footer">
-                <el-dropdown>
-                  <span>
-                     <img class="img" :src="item.user.headportait" alt="" />
-                  </span>
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <div>作者简介</div>
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
-
-              <span style="padding-right: 5px;margin-left: 30px;">
+              <span style="padding-right: 5px">
                 <el-tag size="small">{{
                   item.releasetime.slice(0, 10)
                 }}</el-tag>
               </span>
 
               <span
-                style="padding-left: 5px; margin-left: 30px; margin-top: 10px"
+                style="padding-left: 5px; margin-left: 10px; margin-top: 10px"
               >
                 <el-tag size="small">
                   <i
@@ -65,6 +54,16 @@
                   {{ item.likeNub }}
                 </el-tag>
               </span>
+              <el-dropdown>
+                <span style="margin-left:20px">
+                  <img class="img" :src="item.user.headportait" alt="" @mouseenter="showInfo(item.user.userid,index)"/>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu style="width:285px">
+                    <introuction  ref="child"></introuction>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
             </el-descriptions-item>
           </el-descriptions>
 
@@ -75,27 +74,31 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import { onBeforeMount } from "@vue/runtime-core";
 import { getPost_ } from "@/utils/user/getPosts";
+import introuction from "../../../components/introduction/index.vue";
 const article = ref({
   posts: [],
 });
 
 const count = ref(2);
+const child = ref()  //子组件
 const load = () => {
   count.value++;
   /* getPost_(1,count.value,'学习',article)  */
 };
 onBeforeMount(async () => {
- getposts();
-
+  getposts();   
 });
+const getposts = async () => {  //得到帖子
+  const data = await getPost_(1, count.value, "学习", article);
+  article.value.posts = data.records; 
+}; 
+const showInfo = (id,idx) => {   //悬停用户头像显示用户的简介信息
+  child.value[idx].getInfo(id)  //因为有多个子组件,idx用区分每个子组件的事件
 
-const getposts = async () => {
-    const data = await getPost_(1, count.value, "学习", article);
-    article.value.posts = data.records
-} 
+}
 </script>
 
 <style scoped>

@@ -51,7 +51,7 @@ import { success, error,warn} from "@/utils/popup/message";
 import type { UploadProps } from "element-plus";
 import {updateUserInfo_} from '@/utils/user/updateUserInfo'
 const imageUrl = ref();
-const emit = defineEmits(['changeVisible']);
+const emit = defineEmits(['changeVisible','changeInfo']);
 const props = defineProps(['userInfo'])
 const userId = sessionStorage.getItem('userId')
 const info = ref(
@@ -86,6 +86,7 @@ const submit = async () => {   //提交修改信息
     if (res.code === '100'){
       success('修改成功')
       changeVisible_()
+      emit('changeInfo',info.value)
     }else{
       error(res.msg)
     }
