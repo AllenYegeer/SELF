@@ -28,13 +28,13 @@ const router = createRouter({
         {
           path: "/homePage/createArticle",
           name: 'createArticle',
-          component: () => import('@/views/createAtricle/Create.vue')
+          component: () => import('@/views/createArticle/Create.vue')
         }
         ,
         {
           path: '/homePage/myArticle',
           name: 'myArticle',
-          component: () => import('@/views/myAtricle/index.vue')
+          component: () => import('@/views/myArticle/index.vue')
         },
         {
           path: '/homePage/userInfo',

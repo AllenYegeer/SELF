@@ -47,23 +47,25 @@
                 style="padding-left: 5px; margin-left: 10px; margin-top: 10px"
               >
                 <!-- 点赞 -->
-                <el-tag size="small" style="cursor: pointer">
+                <el-tag size="small" style="cursor: pointer;" @click="like(item.articleid,index)">
                   <i
                     class="iconfont icon-dianzan_kuai"
-                    style="font-size: 15px"
+                    style="font-size: 15px;transition: all 1s linear;"
+                    :class="{
+                      active: userLike.indexOf(item.articleid) != -1,
+                    }"
                   ></i>
-                  {{ item.likeNub }}
+                  <!-- {{ item.likeNub }} -->
                 </el-tag>
               </span>
               <span
                 style="padding-left: 5px; margin-left: 10px; margin-top: 10px"
               >
                 <!-- 收藏 -->
-                <el-tag size="small" style="cursor: pointer">
+                <el-tag size="small" style="cursor: pointer"  @click="cllect(item.articleid)">
                   <i
                     class="iconfont icon-shoucang"
-                    style="font-size: 15px"
-                    @click="cllect(item.articleid)"
+                    style="font-size: 15px;transition: all 1s linear;"
                     :class="{
                       active: userCllection.indexOf(item.articleid) != -1,
                     }"
@@ -116,7 +118,7 @@
     <Comments
       v-if="commentVisible === index"
       @showComments="showComments"
-      :comments="comments.reverse()"
+      :comments="comments"
       :articId="item.articleid"
     >
     </Comments>
@@ -132,7 +134,9 @@ import introuction from "../../../components/introduction/index.vue";
 import Comments from "../../../components/comments/index.vue";
 import { error, success } from "../../../utils/popup/message";
 import { getUserCollection_ } from "../../../utils/user/userCollection";
+import { getUserLike_ } from "../../../utils/user/getUserLike";
 import { collect_ } from "../../../utils/user/collect";
+import {like_}  from '../../../utils/user/like'
 const article = ref({
   posts: [],
 });
@@ -143,6 +147,7 @@ const child = ref(); //子组件
 const commentVisible = ref(); //评论窗口的可见性
 const comments = ref([]); //文章的评论
 const userCllection = ref([]);   //用户的收藏
+const userLike = ref([]) //用户的点赞
 const load = () => {
   count.value++;
   /* getPost_(1,count.value,'学习',article)  */
@@ -151,6 +156,7 @@ onBeforeMount(async () => {
   getUserAttentionId();
   getposts();
   getUserCollection();
+  getUserLike();
 });
 const showComments = (idx, id) => {
   //展示评论
@@ -166,7 +172,7 @@ const getposts = async () => {
   const data = await getPost_(1, count.value, "", article);
   article.value.posts = data.records;
 };
-const getUserAttentionId = async () => {
+const getUserAttentionId = async () => {  
   //得到用户的关注用户Id
   if (userId) {
     const { data: res } = await getUserAttention_(userId);
@@ -188,11 +194,22 @@ const getArticleComments = async (id) => {
 
 const getUserCollection = async () => {
   //获取用户的收藏
-  const res = await getUserCollection_(userId);
-  userCllection.value = res.map((item) => {
+  if(userId){
+    const res = await getUserCollection_(userId);
+    userCllection.value = res.map((item) => {
     return item.articleid;
   });
+  }
 };
+const getUserLike = async () => {   //获取用户的点赞信息
+  if (userId){
+      const res =  await getUserLike_(userId)  
+      userLike.value = res.map((item) => {
+        return item.articleid;
+      })
+  }
+  
+}
 const cllect = async (articleId) => {
   //点击收藏
   if (userId) {
@@ -215,6 +232,33 @@ const cllect = async (articleId) => {
     error("请先登陆");
   }
 };
+
+const like = async (articleId,idx) => {  //点赞功能
+  if (userId){
+    const idx = userLike.value.indexOf(articleId)
+    if (idx == -1){  //点赞   
+      const res = await like_(userId, articleId, 1)
+      if (res.code === '100'){
+        success('点赞成功')
+        /* article.value.posts[idx].likeNub++ */
+        userLike.value.push(articleId)
+      }else{
+        error(res.msg)
+      }
+    }else{  //取消点赞 
+      const res = await like_(userId, articleId, -1)
+      if (res.code === '100'){
+          /* article.value.posts[idx].likeNub -- */
+          userLike.value.splice(idx,1)
+      }else{
+          error(res.msg)
+      }
+      
+    }
+  }else{
+    error("请先登陆");
+  }
+}
 </script>
 
 <style scoped>

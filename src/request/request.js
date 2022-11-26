@@ -29,8 +29,19 @@ function put(url,data){
         }
     })
 }
+
+function delete_(url,data){
+    console.log(data);
+    return instance.delete(url,{data}, {
+        headers: {           //json数据
+            'accept': "application/json",
+            'Content-Type': 'application/json',
+        }
+    })
+}
 export {
     post,
     get,
-    put
+    put,
+    delete_
 }

@@ -109,7 +109,7 @@
 import store from '@/store';
 import { ref,computed } from 'vue';
 import {addComment_} from '@/utils/article/addComment'
-import { error,success } from '@/utils/popup/message';
+import { error,success,warn } from '@/utils/popup/message';
 const emit = defineEmits(['showComments'])
 const imgurl = sessionStorage.getItem('imgUrl')
 const userName = sessionStorage.getItem('userName')
@@ -122,11 +122,11 @@ const showComments_ = () => {
 
 const addComment = async () => {
     if (comment_txt.value.trim() === ''){
-      error('评论内容不可为空')
+      warn('评论内容不可为空')
     }else{
         const time = new Date()
         const date = time.getFullYear() +'-' + time.getMonth() + '-' +time.getDay()
-        props.comments.push(
+        props.comments.unshift(
           {
             comtime:date,
             comtext:comment_txt.value,

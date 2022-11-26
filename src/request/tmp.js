@@ -1,4 +1,4 @@
-import {post, get, put} from "./request"
+import {post, get, put,delete_} from "./request"
 
 function login(data){   //登陆
     return post('/user/login',data)
@@ -36,23 +36,36 @@ function updateUserInfo(data){  //修改用户的信息
     return put('/user',data)
 }
 
-function attent(userId,isAttent,id){
+function attent(userId,isAttent,id){    //关注
     return get(`/user/attent/${userId}/${id}/${isAttent}`)
 }
 
-function getArticleComments(id){   
+function getArticleComments(id){        //得到文章的评论
     return get(`/article/${id}`)
 } 
 function addComment(data){  //发表评论
     return post('/comment',data)
 }
 
-function getUserCollection(userId){
+function getUserCollection(userId){    //得到用户的收藏
     return get(`/article/collect?userid=${userId}`)
 }
 
-function collect(userId, articleId, is_cllect){
+function getUserLike(userId){    //得到用户的点赞
+    return get(`/article/like?userid=${userId}`)
+}
+function collect(userId, articleId, is_cllect){    //收藏
     return get(`/user/collect/${userId}/${articleId}/${is_cllect}`)
+}
+
+function like(userId, articleId, is_like){    //点赞
+    return get(`/user/like/${userId}/${articleId}/${is_like}`)
+}
+
+function deleteArticle(articleId){
+    return delete_('/article',{
+        deleteId: articleId
+    })
 }
 export {
     getPosts,
@@ -68,5 +81,8 @@ export {
     getArticleComments,
     addComment,
     getUserCollection,
-    collect
+    collect,
+    getUserLike,
+    like,
+    deleteArticle
 }

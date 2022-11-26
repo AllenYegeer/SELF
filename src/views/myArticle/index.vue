@@ -1,5 +1,5 @@
 <template>
-  <div class="userAtricle" v-if="visible === true">
+  <div class="userAtricle" v-if="myArticle.total != 0">
     <div class="common-layout" style="background: #f6f6f6" 
     v-for="(item,index) in myArticle.posts" :key="item.articleid">
       <!-- <el-header style="background:#FFFFFF;" >Header</el-header> -->
@@ -8,7 +8,10 @@
         <div>
           <el-main style="margin:20px 30px; width: 95vw; background: #ffffff">
             <div style="min-height: 500px">
-              <h3>{{item.head}}</h3>
+              <div class="header">
+                <h3>{{item.head}}</h3>
+                <el-button  type="danger" circle @click="deleteArticle(index,item.articleid)"><el-icon><DeleteFilled /></el-icon></el-button>
+              </div>
               <el-divider /><!--这里是分割线-->
               <div>
                 <el-descriptions title="封面：" column="1">
@@ -57,13 +60,16 @@
   <empty style="margin:100px 500px" v-else></empty>
 </template>
 
-<script lang="ts" setup>
+ <script lang="ts" setup>
 import { ref } from "@vue/reactivity";
 import { onBeforeMount } from "@vue/runtime-core";
 import empty from '@/components/empty/index.vue'
-import { getUserAtricle_ } from "../../utils/article/publishArticle";
+import { getUserAtricle_ } from "../../utils/user/getUserAtricle";
 import Pageination from '@/components/Pageination/index.vue' //分页
-const myArticle = ref(
+import {deleteArticle_} from '../../utils/article/deleteArticle'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { success,error } from "../../utils/popup/message";
+const myArticle = ref(  //我的文章信息
     {
       total:0,
       posts:[], 
@@ -75,6 +81,34 @@ const visible = ref(false)
 const changePage = (num) => { //点击页码切换
   idx.value = num - 1
 }
+
+const deleteArticle = (index,articId) => {  //删除文章
+   ElMessageBox.confirm(
+    '确认删除?',
+    'Warning',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(async () => {
+      const res = await deleteArticle_(articId)
+      if (res.code === '100')
+      {
+        success('删除成功')
+        myArticle.value.posts.splice(index,1)
+        myArticle.value.total --
+      }
+      else error('删除失败')
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消删除',
+      })
+    })
+}
 onBeforeMount(async () => {
     const userId = sessionStorage.getItem('userId')
     const myArticles = await getUserAtricle_(userId)
@@ -85,10 +119,13 @@ onBeforeMount(async () => {
         visible.value = true;
     }
 })
-
-</script>
+</script> 
 
 <style scoped>
+.header{
+  display: flex;
+  justify-content: space-between;
+}
 .demo-image .block {
   text-align: left;
   border-right: solid 1px var(--el-border-color);
