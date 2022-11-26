@@ -52,11 +52,10 @@
 <script setup>
 import {getUserInfo_} from '@/utils/user/getUserInfo'
 import { onBeforeMount, onMounted, ref} from '@vue/runtime-core'
-import { defineExpose } from 'vue'
 import {attent_} from '@/utils/user/attent'
 import {success,error,warn} from '@/utils/popup/message'
 const props = defineProps(['userAttenionId','id'])
-const userId = sessionStorage.getItem('userId')
+var userId
 const userInfo = ref()
 const visible = ref()
 const info = ref(
@@ -69,6 +68,7 @@ const info = ref(
   }
 )
 const attenion = async () => {   
+  userId = sessionStorage.getItem('userId')
   if (userId){
     const idx = props.userAttenionId.indexOf(props.id)
     if (idx == -1){
@@ -93,7 +93,6 @@ const getInfo = async (id) =>{  //得到用户信息
   info.value.articleNub = res.articleNub
   info.value.attentNub = res.attentNub
   info.value.followNub = res.followNub
-
 }
 defineExpose({   //抛出方法，让父亲调用
 	getInfo

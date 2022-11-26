@@ -75,9 +75,15 @@ const router = createRouter({
     }
     ,
     {
+      path:'/comments',
+      name: 'comments',
+      component: () => import('../components/comments/index.vue')
+    }
+    ,
+    {
       path:'/test',
       name: 'test',
-      component: () => import('../components/myFans/index.vue')
+      component: () => import('../views/homePage/article/particulars/index.vue')
     }
   ]
 })

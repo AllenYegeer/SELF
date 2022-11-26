@@ -3,7 +3,7 @@
     class="common-layout"
     style="background: #f6f6f6; overflow: auto"
     v-infinite-scroll="load"
-    v-for="(item,index) in article.posts"
+    v-for="(item, index) in article.posts"
     :key="item.articleid"
   >
     <el-container>
@@ -46,7 +46,8 @@
               <span
                 style="padding-left: 5px; margin-left: 10px; margin-top: 10px"
               >
-                <el-tag size="small">
+                <!-- 点赞 -->
+                <el-tag size="small" style="cursor: pointer">
                   <i
                     class="iconfont icon-dianzan_kuai"
                     style="font-size: 15px"
@@ -54,65 +55,172 @@
                   {{ item.likeNub }}
                 </el-tag>
               </span>
+              <span
+                style="padding-left: 5px; margin-left: 10px; margin-top: 10px"
+              >
+                <!-- 收藏 -->
+                <el-tag size="small" style="cursor: pointer">
+                  <i
+                    class="iconfont icon-shoucang"
+                    style="font-size: 15px"
+                    @click="cllect(item.articleid)"
+                    :class="{
+                      active: userCllection.indexOf(item.articleid) != -1,
+                    }"
+                  ></i>
+                </el-tag>
+              </span>
+              <el-tooltip content="发表或查看评论">
+                <span
+                  style="padding-left: 5px; margin-left: 10px; margin-top: 2px"
+                >
+                  <!-- 评论 -->
+                  <el-tag
+                    size="small"
+                    style="cursor: pointer"
+                    @click="showComments(index, item.articleid)"
+                  >
+                    <i
+                      class="iconfont icon-pinglun1"
+                      style="font-size: 15px"
+                    ></i>
+                    <!--                         {{ commentVisible === index ? comments.length : 0}} -->
+                  </el-tag>
+                </span>
+              </el-tooltip>
               <el-dropdown>
-                <span style="margin-left:20px">
-                  <img class="img" :src="item.user.headportait" alt="" @mouseenter="showInfo(item.user.userid,index)"/>
+                <span style="margin-left: 20px">
+                  <img
+                    class="img"
+                    :src="item.user.headportait"
+                    alt=""
+                    @mouseenter="showInfo(item.user.userid, index)"
+                  />
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu style="width:285px">
-                    <introuction  ref="child" :userAttenionId="userAttenionId" :id="item.user.userid"></introuction>
+                  <el-dropdown-menu style="width: 285px">
+                    <introuction
+                      ref="child"
+                      :userAttenionId="userAttenionId"
+                      :id="item.user.userid"
+                    ></introuction>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
             </el-descriptions-item>
           </el-descriptions>
-
           <el-divider style="margin: 0" />
         </div>
       </el-main>
     </el-container>
+    <Comments
+      v-if="commentVisible === index"
+      @showComments="showComments"
+      :comments="comments.reverse()"
+      :articId="item.articleid"
+    >
+    </Comments>
   </div>
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
 import { onBeforeMount } from "@vue/runtime-core";
-import { getPost_ } from "@/utils/user/getPosts";
-import {getUserAttention_} from '@/utils/user/getUseAttenion'
+import { getPost_ } from "../../../utils/article/getPosts";
+import { getUserAttention_ } from "@/utils/user/getUseAttenion";
+import { getArticleComments_ } from "../../../utils/article/getArticleComments";
 import introuction from "../../../components/introduction/index.vue";
+import Comments from "../../../components/comments/index.vue";
+import { error, success } from "../../../utils/popup/message";
+import { getUserCollection_ } from "../../../utils/user/userCollection";
+import { collect_ } from "../../../utils/user/collect";
 const article = ref({
   posts: [],
 });
-const userId = sessionStorage.getItem('userId')
-const userAttenionId = ref([])
-const count = ref(2);
-const child = ref()  //子组件
+const userId = sessionStorage.getItem("userId");
+const userAttenionId = ref([]);
+const count = ref(2); //滑动加载
+const child = ref(); //子组件
+const commentVisible = ref(); //评论窗口的可见性
+const comments = ref([]); //文章的评论
+const userCllection = ref([]);   //用户的收藏
 const load = () => {
   count.value++;
   /* getPost_(1,count.value,'学习',article)  */
 };
 onBeforeMount(async () => {
-    getUserAttentionId()
-    getposts();   
+  getUserAttentionId();
+  getposts();
+  getUserCollection();
 });
-const getposts = async () => {  //得到帖子
-  const data = await getPost_(1, count.value, "学习", article);
-  article.value.posts = data.records; 
-}; 
-const getUserAttentionId = async () => {  //得到用户的关注用户Id
-  if (userId){
-    console.log(1111);
-    const {data:res} = await getUserAttention_(userId)
-    userAttenionId.value = res.map((item) => {
-      return item.userid
-    })
+const showComments = (idx, id) => {
+  //展示评论
+  if (userId) {
+    commentVisible.value = idx;
+    getArticleComments(id);
+  } else {
+    error("请先登陆");
   }
-}
-const showInfo = (id,idx) => {   //悬停用户头像显示用户的简介信息
-  child.value[idx].getInfo(id)  //因为有多个子组件,idx用区分每个子组件的事件
-}
+};
+const getposts = async () => {
+  //得到帖子
+  const data = await getPost_(1, count.value, "", article);
+  article.value.posts = data.records;
+};
+const getUserAttentionId = async () => {
+  //得到用户的关注用户Id
+  if (userId) {
+    const { data: res } = await getUserAttention_(userId);
+    userAttenionId.value = res.map((item) => {
+      return item.userid;
+    });
+  }
+};
+const showInfo = (id, idx) => {
+  //悬停用户头像显示用户的简介信息
+  child.value[idx].getInfo(id); //因为有多个子组件,idx用区分每个子组件的事件
+};
+
+const getArticleComments = async (id) => {
+  //得到文章的评论
+  const { data: res } = await getArticleComments_(id);
+  comments.value = res.comments;
+};
+
+const getUserCollection = async () => {
+  //获取用户的收藏
+  const res = await getUserCollection_(userId);
+  userCllection.value = res.map((item) => {
+    return item.articleid;
+  });
+};
+const cllect = async (articleId) => {
+  //点击收藏
+  if (userId) {
+    const idx = userCllection.value.indexOf(articleId);
+    if (idx == -1) {
+      //取消收藏
+      const res = await collect_(userId, articleId,1)
+      if (res.code == '100'){
+        success('收藏成功')
+        userCllection.value.push(articleId)
+      }else{
+        error('收藏失败')
+      }
+    } else {
+      //收藏
+      const res = await collect_(userId, articleId,-1)
+      userCllection.value.splice(idx,1) 
+    }
+  } else {
+    error("请先登陆");
+  }
+};
 </script>
 
 <style scoped>
+.active {
+  color: #f0cc3e;
+}
 a {
   color: #646464;
 }

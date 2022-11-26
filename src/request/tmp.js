@@ -39,6 +39,21 @@ function updateUserInfo(data){  //修改用户的信息
 function attent(userId,isAttent,id){
     return get(`/user/attent/${userId}/${id}/${isAttent}`)
 }
+
+function getArticleComments(id){   
+    return get(`/article/${id}`)
+} 
+function addComment(data){  //发表评论
+    return post('/comment',data)
+}
+
+function getUserCollection(userId){
+    return get(`/article/collect?userid=${userId}`)
+}
+
+function collect(userId, articleId, is_cllect){
+    return get(`/user/collect/${userId}/${articleId}/${is_cllect}`)
+}
 export {
     getPosts,
     login,
@@ -49,5 +64,9 @@ export {
     getUserFans,
     getUserAttention,
     updateUserInfo,
-    attent
+    attent,
+    getArticleComments,
+    addComment,
+    getUserCollection,
+    collect
 }

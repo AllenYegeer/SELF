@@ -61,7 +61,7 @@
 import { ref } from "@vue/reactivity";
 import { onBeforeMount } from "@vue/runtime-core";
 import empty from '@/components/empty/index.vue'
-import { getUserAtricle_ } from "@/utils/user/getUserAtricle";
+import { getUserAtricle_ } from "../../utils/article/publishArticle";
 import Pageination from '@/components/Pageination/index.vue' //分页
 const myArticle = ref(
     {
