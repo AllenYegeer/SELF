@@ -1,7 +1,7 @@
 <template>
   <div class="userInfo" v-loading.fullscreen.lock="loadingVisible">
-    <Top :info="userInfo" @changeVisible="changeVisible"></Top>
-    <Bottom v-if="visible" class="bottom" :info="userInfo" @changeInfo="changeInfo"></Bottom>
+    <Top :info="userInfo" @changeVisible="changeVisible" :userId="userId"></Top>
+    <Bottom v-if="visible" class="bottom" :info="userInfo" @changeInfo="changeInfo" :userId="userId"></Bottom>
     <router-view v-else></router-view>
   </div>
 </template>
@@ -14,9 +14,12 @@ import { getUserFans_ } from "../../utils/user/getUserFans";
 import { getUserInfo_ } from "../../utils/user/getUserInfo";
 import { onBeforeMount, ref } from "@vue/runtime-core";
 import store from "../../store";
-const userId = sessionStorage.getItem('userId')
+import { useRouter } from 'vue-router'
+let userId = ref(0)
 const loadingVisible = ref(true);  //加载的可见性
 onBeforeMount(() => {
+  const router = useRouter()
+  userId.value = router.currentRoute.value.query.userId  //获取当前的路由传参的用户id
   loading()
   getUserInfo();
 });
@@ -28,7 +31,7 @@ const loading = () => {  //页面加载
   }, 2000);
 }
 const getUserInfo = async () => {
-  const res = await getUserInfo_(userId);
+  const res = await getUserInfo_(userId.value);
   userInfo.value.user_name = res.data.username;
   userInfo.value.age = res.data.age;
   userInfo.value.phoNum = res.data.phone;
@@ -77,9 +80,6 @@ const visible = ref(true)
   width: 70vw;
 }
 .bottom {
-  /*  position: absolute;
-      left:500px;
-      width: 500px; */
   transform: translateX(200px);
 }
 </style>

@@ -5,7 +5,9 @@
     router
     text-color="#409EFF"
   >
-      <el-menu-item index="/homePage/userInfo" @click="changeActive_">
+      <el-menu-item index='/homePage/userInfo'
+      :route="{name:'homePage_userInfo',query:{userId:userId}}"
+      @click="changeActive_">
         <i class="iconfont icon-gerenziliao"></i>
         <span>个人资料</span>
       </el-menu-item>
@@ -38,11 +40,10 @@ import {
   Location,
   Setting,
 } from "@element-plus/icons-vue";
-
 const emit = defineEmits(['changeActive'])
+const userId = sessionStorage.getItem('userId')
 const isCollapse = ref(false);
 const loginOut = () => {
-    
 }
 /* const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);

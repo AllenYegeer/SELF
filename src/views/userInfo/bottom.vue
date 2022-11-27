@@ -3,14 +3,15 @@
     <el-card>
       <el-descriptions class="margin-top" title="简介" :column="2" border>
         <template #extra>
-          <el-button type="primary" circle @click="changeVisible"><el-icon><EditPen/></el-icon></el-button>
+          <el-button v-if="props.userId == userId" type="primary" circle @click="changeVisible"><el-icon><EditPen/></el-icon></el-button>
         </template>
         <el-descriptions-item>
           <template #label> 
             <i class="iconfont icon-xiugaitouxiang"></i>
             头像
           </template>
-          <img class="img" :src="imgurl ||imgUrl" alt="" />
+          <img v-if="userId === props.userId" class="img" :src="imgurl ||imgUrl" alt="" />  <!-- 是用户显示用户头像 -->
+          <img v-else :src="props.info.headportait" class="img"/>
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
@@ -102,14 +103,15 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref,onMounted } from 'vue';
 import updata from '@/components/update/index.vue'
 import store  from '../../store';
-const props = defineProps(['info'])
+const props = defineProps(['info','userId'])
 const emit = defineEmits(['changeInfo'])
 const visible = ref(false)  //个人信息修改界面的可见性
 const imgUrl = ref(computed(() => sessionStorage.getItem('imgUrl')))
 const imgurl = ref(computed (() => store.state.url))
+const userId = sessionStorage.getItem('userId')
 const changeVisible = () =>{  //修改个人信息修改界面的可见性
   visible.value = !visible.value
 }

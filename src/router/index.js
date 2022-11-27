@@ -39,7 +39,7 @@ const router = createRouter({
         {
           path: '/homePage/userInfo',
           name: 'homePage_userInfo',
-          component: () => import('../views/userInfo/index.vue'),
+          component: () => import('@/views/userInfo/index.vue'),
           children:[
               {
                 path: '/homePage/userInfo/userFans',

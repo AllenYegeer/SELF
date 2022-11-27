@@ -60,7 +60,7 @@ import { onBeforeMount } from "@vue/runtime-core";
 import {updateUserInfo_} from '@/utils/user/updateUserInfo'
 import router from "@/router";
 import store from "../../store";
-const props = defineProps(["info"]);
+const props = defineProps(["info",'userId']);
 const emit = defineEmits(['changeVisible'])
 const imageUrl = ref();
 const button_visiable = ref(false)
