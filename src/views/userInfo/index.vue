@@ -14,14 +14,24 @@ import { getUserFans_ } from "../../utils/user/getUserFans";
 import { getUserInfo_ } from "../../utils/user/getUserInfo";
 import { onBeforeMount, ref } from "@vue/runtime-core";
 import store from "../../store";
-import { useRouter } from 'vue-router'
-let userId = ref(0)
+import { onBeforeRouteUpdate, useRouter } from 'vue-router'
 const loadingVisible = ref(true);  //加载的可见性
-onBeforeMount(() => {
+const userId = ref(0)
+onBeforeRouteUpdate( async () => {
+    loading()
+    userId.value = sessionStorage.getItem('userId')
+    getUserInfo(userId.value)
+})
+onBeforeMount(() => {  //当路由更改时
   const router = useRouter()
-  userId.value = router.currentRoute.value.query.userId  //获取当前的路由传参的用户id
+  if (router.currentRoute.value.query.userId)  //获取当前的路由传参的用户id
+   {
+        sessionStorage.setItem('otherUserId',router.currentRoute.value.query.userId)  
+        //存储路由中的id
+   }
+  userId.value = sessionStorage.getItem('otherUserId')
   loading()
-  getUserInfo();
+  getUserInfo(userId.value);
 });
 
 const loading = () => {  //页面加载
@@ -30,8 +40,8 @@ const loading = () => {  //页面加载
     loadingVisible.value = false;
   }, 2000);
 }
-const getUserInfo = async () => {
-  const res = await getUserInfo_(userId.value);
+const getUserInfo = async (userId) => {
+  const res = await getUserInfo_(userId);
   userInfo.value.user_name = res.data.username;
   userInfo.value.age = res.data.age;
   userInfo.value.phoNum = res.data.phone;

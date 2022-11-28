@@ -1,13 +1,15 @@
 <template>
   <div class="PersonTop">
     <div class="header">
-      <div class="img">
-          <img
-            :src="info.headportait"
-            class="avatar"
-            style="height: 70px; width: 70px"
-          />
-      </div>
+     <router-link :to="{name:'homePage_userInfo',query:{userId:props.id}}">
+        <div class="img">
+            <img
+              :src="info.headportait"
+              class="avatar"
+              style="height: 70px; width: 70px"
+            />
+        </div>
+     </router-link>
       <div class="user_text">
         <div class="user_name">
           <span>{{info.username}}</span>

@@ -12,7 +12,7 @@
         <span>个人资料</span>
       </el-menu-item>
 
-      <el-menu-item index="/homePage/myArticle" @click="changeActive_">
+      <el-menu-item index="" @click="changeActive_();toArticlePage()">
         <i class="iconfont icon-chuangzuo"></i>
         <span>我的创作</span>
       </el-menu-item>
@@ -34,6 +34,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, ref } from "vue";
+import router from "../../../router";
 import {
   Document,
   Menu as IconMenu,
@@ -52,8 +53,12 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 }; */
 
-const changeActive_ = () => {
+const changeActive_ = async () => {
   emit('changeActive',-1)
+}
+
+const toArticlePage = async () => {
+  router.push(`/homePage/myArticle/${userId}`)
 }
 </script>
 <style scoped>

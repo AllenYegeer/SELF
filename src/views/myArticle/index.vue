@@ -1,21 +1,22 @@
 <template>
   <div class="userAtricle" v-if="myArticle.total != 0">
-    <div class="common-layout" style="background: #f6f6f6" 
+    <template 
     v-for="(item,index) in myArticle.posts" :key="item.articleid">
-      <!-- <el-header style="background:#FFFFFF;" >Header</el-header> -->
-      <el-container v-if="index  == idx">
-        <!--  <el-aside width="20%" style="background:#FFFFFF;">Aside</el-aside> -->
-        <div>
-          <el-main style="margin:20px 30px; width: 95vw; background: #ffffff">
-            <div style="min-height: 500px">
+          <el-card style="margin:20px 30px;  background: #ffffff" v-if="index == idx">
+            <div style="min-height: auto">
               <div class="header">
                 <h3>{{item.head}}</h3>
-                <el-button  type="danger" circle @click="deleteArticle(index,item.articleid)"><el-icon><DeleteFilled /></el-icon></el-button>
+                <el-button  
+                v-if="otherUserId === userId"
+                type="danger" 
+                circle 
+                @click="deleteArticle(index,item.articleid)">  <!-- 删除按钮 -->
+                  <el-icon><DeleteFilled /></el-icon></el-button>
               </div>
               <el-divider /><!--这里是分割线-->
               <div>
-                <el-descriptions title="封面：" column="1">
-                  <el-descriptions-item class="img">
+                <el-descriptions  column="1">
+                  <el-descriptions-item  label="封面:" class="img"  v-if="item.cover">
                     <div class="demo-image">
                       <div class="block">
                         <span class="demonstration"></span>
@@ -33,8 +34,16 @@
                         {{item.summary}}
                       </p>
                   </el-descriptions-item>
-  
-                  <el-descriptions-item label="">
+
+                  <el-descriptions-item label="文章内容:" label-align="left">
+                    <p>
+                       {{item.txt}}
+                    </p>
+                  </el-descriptions-item>
+                </el-descriptions>
+                 <el-divider style="margin: 0" />
+
+                <div class="footer" style="margin-top:10px">
                     <span style="padding-right: 5px">
                       <el-tag size="small">{{item.releasetime.slice(0,10)}}</el-tag>
                     </span>
@@ -45,16 +54,11 @@
                         {{item.likeNub}}
                       </el-tag>
                     </span>
-                  </el-descriptions-item>
-                </el-descriptions>
-                <el-divider style="margin: 0" />
+                  </div>              
               </div>
-              {{item.txt}}
             </div>
-          </el-main> 
-        </div>
-      </el-container>
-    </div>
+          </el-card> 
+    </template>
     <Pageination :total="myArticle.total" @changePage="changePage"></Pageination>
   </div>
   <empty style="margin:100px 500px" v-else></empty>
@@ -69,6 +73,7 @@ import Pageination from '@/components/Pageination/index.vue' //分页
 import {deleteArticle_} from '../../utils/article/deleteArticle'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { success,error } from "../../utils/popup/message";
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
 const myArticle = ref(  //我的文章信息
     {
       total:0,
@@ -78,6 +83,8 @@ const myArticle = ref(  //我的文章信息
 
 const idx = ref(0)
 const visible = ref(false)
+const userId = ref()
+const otherUserId = ref()
 const changePage = (num) => { //点击页码切换
   idx.value = num - 1
 }
@@ -109,10 +116,20 @@ const deleteArticle = (index,articId) => {  //删除文章
       })
     })
 }
-onBeforeMount(async () => {
-    const userId = sessionStorage.getItem('userId')
-    const myArticles = await getUserAtricle_(userId)
 
+onBeforeRouteUpdate( async () => {  //刷新路由
+    otherUserId.value = userId.value
+    const myArticles = await getUserAtricle_(userId.value)  
+    myArticle.value.posts = myArticles.data
+    myArticle.value.total = myArticles.data.length
+    if (myArticle.value.total != 0){
+        visible.value = true;
+    }
+})
+onBeforeMount(async () => {
+    userId.value = sessionStorage.getItem('userId')  //当前登陆用户的id
+    otherUserId.value = useRoute().params.id    //当前其他用户的id 
+    const myArticles = await getUserAtricle_(otherUserId.value)  
     myArticle.value.posts = myArticles.data
     myArticle.value.total = myArticles.data.length
     if (myArticle.value.total != 0){

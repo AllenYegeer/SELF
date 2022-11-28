@@ -123,16 +123,19 @@
               </el-tag>
             </span>
           </el-tooltip>
+
+
           <el-dropdown>
+            <!-- 头像 -->
             <router-link :to="{name:'homePage_userInfo',query:{userId:item.user.userid}}">
-              <span style="margin-left: 20px">
-                <img
-                  class="img"
-                  :src="item.user.headportait"
-                  alt=""
-                  @mouseenter="showInfo(item.user.userid, index)"
-                />
-              </span>
+                <span style="margin-left: 20px">
+                  <img
+                    class="img"
+                    :src="item.user.headportait"
+                    alt=""
+                    @mouseenter="showInfo(item.user.userid, index)"
+                  />
+                </span>
             </router-link>
             <template #dropdown>
               <el-dropdown-menu style="width: 285px">

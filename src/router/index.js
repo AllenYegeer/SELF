@@ -32,10 +32,15 @@ const router = createRouter({
         }
         ,
         {
-          path: '/homePage/myArticle',
+          path: '/homePage/myArticle/:id',
           name: 'myArticle',
           component: () => import('@/views/myArticle/index.vue')
         },
+        /* {
+          path: '/homePage/myArticle',
+          name: 'myArticle',
+          component: () => import('@/views/myArticle/index.vue')
+        }, */
         {
           path: '/homePage/userInfo',
           name: 'homePage_userInfo',
