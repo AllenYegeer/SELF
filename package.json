@@ -11,6 +11,7 @@
     "axios": "^1.1.3",
     "element-plus": "^2.2.18",
     "element-react": "^1.4.34",
+    "identify": "^0.1.5",
     "less": "^4.1.3",
     "qs": "^6.11.0",
     "stylus": "^0.59.0",

@@ -1,7 +1,7 @@
 <template>
   <el-dropdown style="width: 100%; height: 100%">
-        <img :src="imgurl || imgUrl" alt="" v-if="!visBeforLogin" />
-        <span v-else class="login">登陆</span>
+        <img :src=" imgurl ||imgUrl" alt="" v-if="!visBeforLogin" />
+        <span  class="login">登陆</span>
         <template #dropdown>
           <el-dropdown-menu
             style="width:100%">
@@ -24,7 +24,7 @@ const imgUrl = ref();
 const imgurl = ref (computed (() => store.state.url))
 const visBeforLogin = ref(true);
 const emit = defineEmits(['changeActive'])
-const changeVisBeforLogin = () => {
+const changeVisBeforLogin = () => {   //登录或注册后发生变化
   visBeforLogin.value = !visBeforLogin.value;
   refresh()
 };
@@ -32,6 +32,7 @@ const changeActive_ = (num) =>{
   emit('changeActive',num)
 }
 onBeforeMount(() => {
+  console.log(imgUrl.value);
   refresh()
 })
 const refresh = () => {
@@ -39,6 +40,8 @@ const refresh = () => {
   if (url) {
     imgUrl.value = url;
     visBeforLogin.value = false
+  }else{
+    visBeforLogin.value = true
   }
 }
 </script>

@@ -1,15 +1,14 @@
 <template>
     <div class="page">
-        <el-pagination background layout="total, prev, pager, next, jumper" :total="total" :page-size="1" 
+        <el-pagination background layout="total, prev, pager, next, jumper" :total="total" :page-size="pageSize" 
         @current-change='changePage_'/>
     </div>
 </template>
 <script setup>
 import { ref} from "@vue/reactivity";
 import {computed} from 'vue'
-    const props = defineProps(['total'])
+    const props = defineProps(['total','pageSize'])
     const emit = defineEmits(['changePage'])
-    const totalSize = ref(computed(() => props.total))   //总的条数
     const changePage_ = (page) =>{
         emit('changePage',page)
     }

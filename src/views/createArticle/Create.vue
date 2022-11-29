@@ -125,6 +125,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid) => {
     if (valid) {
       const userId = sessionStorage.getItem('userId')
+      if (userId){
       publishArticle_({
         cover: imageUrl.value,
         head: ruleForm.value.head,
@@ -132,7 +133,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         txt: ruleForm.value.txt,
         type: ruleForm.value.type,
         userId: userId,
-      });
+        });
+      }else{
+        error('请登录')
+      }
     } else {
        //如果有空，则发不了
       error("请按规定填写内容")

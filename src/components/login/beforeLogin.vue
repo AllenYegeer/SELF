@@ -27,8 +27,8 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import Login from '../../views/login_register/loginTo/index.vue'
-import Register from '../../views/login_register/registerPage/index.vue'
+import Login from '@/views/login_register/loginTo/index.vue'
+import Register from '@/views/login_register/registerPage/index.vue'
 import router from '@/router';
     const emit = defineEmits(['changeVisBeforLogin'])
     const visibleLogin = ref(false)   //登陆窗口的可见

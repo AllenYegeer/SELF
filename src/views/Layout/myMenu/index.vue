@@ -26,7 +26,7 @@
         <span>我的点赞</span>
       </el-menu-item>
 
-      <el-menu-item  index='/home' @click="loginOut">
+      <el-menu-item  index='/home' @click="loginOut" >
         <i class="iconfont icon-dingbudaohang-zhangh"></i>
         <span>退出登陆</span>
       </el-menu-item>
@@ -44,27 +44,23 @@ import {
 const emit = defineEmits(['changeActive'])
 const userId = sessionStorage.getItem('userId')
 const isCollapse = ref(false);
-const loginOut = () => {
-}
-/* const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-}; */
 
-const changeActive_ = async () => {
+const changeActive_ = async () => {  //改变header下底
   emit('changeActive',-1)
 }
 
-const toArticlePage = async () => {
+const toArticlePage = async () => {   //点击去文章界面
   router.push(`/homePage/myArticle/${userId}`)
+}
+
+const loginOut = () => {   //退出登录
+    sessionStorage.clear()  //清空
+    router.push('/enterTOHome')
 }
 </script>
 <style scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: auto;
-/*   min-height: 500px; */
 }
 
 .iconfont {

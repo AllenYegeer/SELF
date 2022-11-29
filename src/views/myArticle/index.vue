@@ -59,7 +59,7 @@
             </div>
           </el-card> 
     </template>
-    <Pageination :total="myArticle.total" @changePage="changePage"></Pageination>
+    <Pageination :total="myArticle.total" @changePage="changePage" :pageSize='1'></Pageination>
   </div>
   <empty style="margin:100px 500px" v-else></empty>
 </template>

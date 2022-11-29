@@ -88,7 +88,7 @@ const router = createRouter({
     {
       path:'/test',
       name: 'test',
-      component: () => import('../views/homePage/article/particulars/index.vue')
+      component: () => import('../components/waitting/index.vue')
     }
   ]
 })

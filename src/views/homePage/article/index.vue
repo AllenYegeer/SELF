@@ -152,9 +152,12 @@
     </el-card>
     <Comments
       v-if="commentVisible === index"
-      @showComments="showComments"
-      :comments="comments"
+      :comments="comments.slice(conmmentIndex,conmmentIndex + 6)"
+      :total="comments.length"
       :articId="item.articleid"
+      @addComment="addComment" 
+      @changePage="changeCommentIndex"
+      @showComments="showComments"
     >
     </Comments>
   </div>
@@ -172,6 +175,7 @@ import { getUserCollection_ } from "../../../utils/user/userCollection";
 import { getUserLike_ } from "../../../utils/user/getUserLike";
 import { collect_ } from "../../../utils/user/collect";
 import { like_ } from "../../../utils/user/like";
+import { valueEquals } from "element-plus";
 const article = ref({
   posts: [],
 });
@@ -184,6 +188,7 @@ const articleVisible = ref() //帖子可见性
 const comments = ref([]); //文章的评论
 const userCllection = ref([]); //用户的收藏
 const userLike = ref([]); //用户的点赞
+const conmmentIndex = ref(0)
 const load = () => {
   count.value++;
   /* getPost_(1,count.value,'学习',article)  */
@@ -195,6 +200,12 @@ onBeforeMount(async () => {
   getUserLike();
 });
 
+const addComment = (val) => {
+  comments.value.unshift(val)
+}
+const changeCommentIndex = (page) => {   //改变评论分页的下标
+  conmmentIndex.value = (page - 1) * 6
+}
 const showArticle = (idx) => {  //展示文章txt
   articleVisible.value = idx
 }
@@ -206,6 +217,7 @@ const showComments = (idx, id) => {
   //展示评论
   if (userId) {
     commentVisible.value = idx;
+    if(idx != -1)
     getArticleComments(id);
   } else {
     error("请先登陆");

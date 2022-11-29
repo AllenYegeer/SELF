@@ -102,6 +102,7 @@
                 </div>
               </div> -->
             </div>
+            <Page :total="total" :pageSize='6' @changePage="changePage"></Page>
     </el-card>
 </template>
 
@@ -110,23 +111,24 @@ import store from '@/store';
 import { ref,computed } from 'vue';
 import {addComment_} from '@/utils/article/addComment'
 import { error,success,warn } from '@/utils/popup/message';
-const emit = defineEmits(['showComments'])
+import Page from '../Pageination/index.vue'
+const emit = defineEmits(['showComments','changePage','addComment'])
 const imgurl = sessionStorage.getItem('imgUrl')
 const userName = sessionStorage.getItem('userName')
-const props = defineProps(['comments','articId'])
+const props = defineProps(['comments','articId','total'])
 const comment_txt =  ref('')
 const userId = sessionStorage.getItem('userId')
 const showComments_ = () => {
-    emit('showComments')
+    emit('showComments',-1)
 }
 
-const addComment = async () => {
+const addComment = async () => {  //添加评论
     if (comment_txt.value.trim() === ''){
       warn('评论内容不可为空')
     }else{
         const time = new Date()
         const date = time.getFullYear() +'-' + time.getMonth() + '-' +time.getDay()
-        props.comments.unshift(
+        emit('addComment',
           {
             comtime:date,
             comtext:comment_txt.value,
@@ -149,6 +151,10 @@ const addComment = async () => {
         } 
         else error('评论失败')
     }
+}
+
+const changePage = async (page) =>{
+    emit('changePage',page)
 }
 </script>
 

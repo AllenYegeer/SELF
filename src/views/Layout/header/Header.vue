@@ -86,20 +86,6 @@ const isActive = computed(() => props.isActive);
 const changeActive_ = (num) => {
   emit("changeActive", num);
 };
-/* const changeVisBeforLogin = () => {
-  visBeforLogin.value = !visBeforLogin.value;
-  refresh()
-};
-onBeforeMount(() => {
-  refresh()
-})
-const refresh = () => {
-  const url = sessionStorage.getItem("userHeadPortraitUrl");
-  if (url) {
-    imgUrl.value = url;
-    visBeforLogin.value = false
-  }
-} */
 </script>
 
 <style scoped>

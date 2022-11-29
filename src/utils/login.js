@@ -7,12 +7,12 @@ const login_ = (data) => {
     return new Promise((resolve,reject) => {
         login(data).then((res) => {
             if (res.data.code === '100') {
-                success('登陆成功')
                 sessionStorage.setItem('userId', res.data.data.userid)  //设置用户id
                 sessionStorage.setItem('imgUrl', res.data.data.headportait) //设置头像url
-                sessionStorage.setItem('userName', res.data.username)  //设置用户名
+                sessionStorage.setItem('userName', res.data.data.username)  //设置用户名
                 store.commit('updateUrl', res.data.data.headportait)
                 resolve(res.data)
+                success('登录成功！')
                 window.location.reload()
             } else {
                 error(res.data.msg)
