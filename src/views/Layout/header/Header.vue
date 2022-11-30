@@ -10,11 +10,11 @@
             >首页</router-link
           >
         </li>
-        <li @click="changeActive_(2)">
+      <!--   <li @click="changeActive_(2)">
           <router-link to="#" :class="{ active: isActive == 2 }"
             >关注</router-link
           >
-        </li>
+        </li> -->
         <li @click="changeActive_(3)">
           <router-link to="#" :class="{ active: isActive == 3 }"
             >学习</router-link

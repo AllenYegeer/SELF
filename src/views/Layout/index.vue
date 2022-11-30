@@ -23,7 +23,4 @@ const changeActive = (num) => {
     .homePage{
         position: relative;
     }
-    .right {
-    
-    }
 </style>

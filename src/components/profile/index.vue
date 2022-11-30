@@ -32,7 +32,6 @@ const changeActive_ = (num) =>{
   emit('changeActive',num)
 }
 onBeforeMount(() => {
-  console.log(imgUrl.value);
   refresh()
 })
 const refresh = () => {

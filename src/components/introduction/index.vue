@@ -40,13 +40,13 @@
     <div class="footer">
         <el-button type="primary" @click="attenion" v-if="props.userAttenionId.indexOf(props.id) === -1">
           <el-icon><Plus /></el-icon>
-          <span>关注</span>
+          <span>关注他</span>
         </el-button>
         <el-button v-else type="info" @click="attenion">
           <el-icon><Select /></el-icon>
           <span>已关注</span>
         </el-button>
-        <el-button type="success" ><span style="margin-right:10px"><i class="iconfont icon-sixin"></i></span>私信他</el-button>
+        <el-button type="success" ><el-icon><Message /></el-icon><span></span>私信他</el-button>
     </div>
   </div>
 </template>

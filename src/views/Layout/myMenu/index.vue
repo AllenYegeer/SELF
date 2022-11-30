@@ -16,12 +16,12 @@
         <i class="iconfont icon-chuangzuo"></i>
         <span>我的创作</span>
       </el-menu-item>
-      <el-menu-item index="" @click="changeActive_">
+      <el-menu-item index="" @click="changeActive_();toCollectionPage()">
         <i class="iconfont icon-shoucang"></i>
         <span>我的收藏</span>
       </el-menu-item>
 
-      <el-menu-item index="" @click="changeActive_" style="border-bottom:2px solid #E3E5E7">
+      <el-menu-item index="" @click="changeActive_();toLikeArticlePage()" style="border-bottom:2px solid #E3E5E7">
         <i class="iconfont icon-dianzan_kuai"></i>
         <span>我的点赞</span>
       </el-menu-item>
@@ -53,6 +53,13 @@ const toArticlePage = async () => {   //点击去文章界面
   router.push(`/homePage/myArticle/${userId}`)
 }
 
+const toCollectionPage = async () => {  //点击去收藏页面
+  router.push(`/homepage/myCollectedArticle/${1}`)
+}
+
+const toLikeArticlePage = async () => { //点击跳转去点赞页面
+  router.push(`/homepage/myLikedArticle/${2}`)
+}
 const loginOut = () => {   //退出登录
     sessionStorage.clear()  //清空
     router.push('/enterTOHome')

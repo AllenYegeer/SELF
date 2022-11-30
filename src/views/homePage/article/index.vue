@@ -1,12 +1,14 @@
 <template>
   <div
     class="common-layout"
-    style="background: #f6f6f6; overflow: auto"
-    v-infinite-scroll="load"
+    style="background: #f6f6f6;overflow: auto"
+
     v-for="(item, index) in article.posts"
     :key="item.articleid"
   >
-    <el-card style="margin: 20px; width: 96vw; background: #ffffff">
+    <el-card style="margin: 20px; width: 96vw; background: #ffffff"
+    v-if="item.user.userid != nowUserId"
+    >
       <div style="min-height: 280px">
         <router-link to="#"
           ><h3>{{ item.head }}</h3></router-link
@@ -180,6 +182,7 @@ const article = ref({
   posts: [],
 });
 const userId = sessionStorage.getItem("userId");
+const nowUserId = ref(0)
 const userAttenionId = ref([]);
 const count = ref(2); //滑动加载
 const child = ref(); //子组件
@@ -190,10 +193,13 @@ const userCllection = ref([]); //用户的收藏
 const userLike = ref([]); //用户的点赞
 const conmmentIndex = ref(0)
 const load = () => {
-  count.value++;
-  /* getPost_(1,count.value,'学习',article)  */
+  if(3 + count.value < article.value.posts.length){    
+    count.value++;
+  }
+  
 };
 onBeforeMount(async () => {
+  nowUserId.value = sessionStorage.getItem('userId')
   getUserAttentionId();
   getposts();
   getUserCollection();
@@ -225,8 +231,9 @@ const showComments = (idx, id) => {
 };
 const getposts = async () => {
   //得到帖子
-  const data = await getPost_(1, count.value, "");
+  const data = await getPost_(1, 1000, "");
   article.value.posts = data.records;
+  
 };
 const getUserAttentionId = async () => {
   //得到用户的关注用户Id
@@ -239,7 +246,7 @@ const getUserAttentionId = async () => {
 };
 const showInfo = (id, idx) => {
   //悬停用户头像显示用户的简介信息
-  child.value[idx].getInfo(id); //因为有多个子组件,idx用区分每个子组件的事件
+  child.value[idx].getInfo(id); //因为有多个子组件,idx用区分每个子组件的事件 
 };
 
 const getArticleComments = async (id) => {

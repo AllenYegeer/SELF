@@ -3,7 +3,7 @@
       <div class="login_left">
         <el-form status-icon label-width="auto" :model="login_info" class="demo-ruleForm">
           <el-form-item>
-              <el-input :prefix-icon="Iphone" type="text" v-model="login_info.phone" autocomplete="off" placeholder="手机号" clearable></el-input>
+              <el-input :prefix-icon="User" type="text" v-model="login_info.phone" autocomplete="off" placeholder="手机号" clearable></el-input>
           </el-form-item>
 
           <el-form-item>
@@ -13,12 +13,11 @@
 
           <el-form-item>
               <div class="identify" style="display:flex">
-                <el-input :prefix-icon="Lock" type="text" placeholder="验证码" v-model="login_info.code" autocomplete="off" clearable
+                <el-input :prefix-icon="Key" type="text" placeholder="验证码" v-model="login_info.code" autocomplete="off" clearable
                 style="height:36px"
                 ></el-input>
                 <Identity  @click="refreshCode" :identifyCode="identifyCode" 
                 style="margin-left:10px;
-
                 "/>
               </div>
               
@@ -43,7 +42,7 @@ import { login_ } from "@/utils/login";
 import router from "@/router";
 import { ElMessage } from 'element-plus'
 import { error, success } from "@/utils/popup/message";
-import {Iphone,Lock } from '@element-plus/icons-vue'
+import {Iphone,Lock,User,Key } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 import Identity from '../../../components/Identify/index.vue';
 const emit = defineEmits(['changeVisible'])

@@ -42,6 +42,17 @@ const router = createRouter({
           component: () => import('@/views/myArticle/index.vue')
         }, */
         {
+          path: '/homepage/myCollectedArticle/:id',
+          name: 'myCollectedArticle',
+          component: () => import('@/components/article/index.vue')
+        },
+        {
+          path: '/homepage/myLikedArticle/:id',
+          name: 'myLikedArticle',
+          component: () => import('@/components/article/index.vue')
+        }
+        ,
+        {
           path: '/homePage/userInfo',
           name: 'homePage_userInfo',
           component: () => import('@/views/userInfo/index.vue'),
@@ -88,7 +99,7 @@ const router = createRouter({
     {
       path:'/test',
       name: 'test',
-      component: () => import('../components/waitting/index.vue')
+      component: () => import('@/components/article/index.vue')
     }
   ]
 })
