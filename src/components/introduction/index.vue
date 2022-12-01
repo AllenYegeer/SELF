@@ -154,6 +154,7 @@ img {
   font-size: 15px;
   color: #00c3ff;
 }
+
 .user_num {
   height: 100%;
   display: flex;

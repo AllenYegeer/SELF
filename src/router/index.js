@@ -36,11 +36,11 @@ const router = createRouter({
           name: 'myArticle',
           component: () => import('@/views/myArticle/index.vue')
         },
-        /* {
-          path: '/homePage/myArticle',
-          name: 'myArticle',
-          component: () => import('@/views/myArticle/index.vue')
-        }, */
+        {
+          path:'/homePage/articleDetails/:id',
+          name:'articleDetails',
+          component:() => import('../views/homePage/article/particulars/index.vue')
+        },
         {
           path: '/homepage/myCollectedArticle/:id',
           name: 'myCollectedArticle',
@@ -99,7 +99,7 @@ const router = createRouter({
     {
       path:'/test',
       name: 'test',
-      component: () => import('@/components/article/index.vue')
+      component: () => import('@/views/homePage/article/particulars/index.vue')
     }
   ]
 })

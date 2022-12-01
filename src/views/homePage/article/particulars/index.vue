@@ -1,21 +1,16 @@
 <template>
-    <div class="common-layout">
-    <el-container>
-      <el-header>
-        <Header />
-      </el-header>
-      <el-main class="p_main" style="padding: 20px 0 120px 0;">
-        <Content />
-      </el-main>
-    </el-container>
-  </div>
+        <Content style="margin-top:2vw" :articleId="articleId"/>
 </template>
   
 <script setup>
-import Header from './Header.vue'
 import Content from './Content.vue'
-import { ref,reactive } from 'vue'
-
+import { ref,reactive, onBeforeMount } from 'vue'
+import { useRoute } from 'vue-router'
+import { getArticleComments_ } from '@/utils/article/getArticleComments';
+const articleId = ref()
+onBeforeMount( () => {
+  articleId.value = useRoute().params.id
+})
 </script>
   
 <style>

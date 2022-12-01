@@ -1,70 +1,111 @@
 <template>
-    <div class="common-layout" style="background-color: #fff;padding: 20px 40px 0;">
+    <el-card style="width:auto;margin:0 20px">
         <el-container>
-            <el-container style="width: 80%;border-right: 1px solid rgba(0, 0, 0, 0.1);">
+            <el-container style="width: auto;border-right: 1px solid rgba(0, 0, 0, 0.1);">
                 <el-main style="padding: 0 30px 10px;">
-                    <!-- ceshi -->
-
                     <div class="header">
-                        <h2>标题</h2>
-                        <div>
-                            <span>时间</span>
-                            <span class="name">作者</span>
+                        <h1>{{articInfo.head}}</h1>
+                        <div class="time">
+                            <el-tag>{{articInfo.releasetime.slice(0,10)}}</el-tag>
                         </div>
                     </div>
-                    <div>
-                        <h4>简介</h4>
+                    <el-divider></el-divider>
+                    <div class="summary">
+                        <h2>{{articInfo.summary}}</h2>
                     </div>
-                    <div>
-                        内容
+                    <div class="cover">
+                        <el-image
+                        v-if="articInfo.cover"
+                        style="width: 120px; height: 120px"
+                        :src="articInfo.cover"
+                        fit="contain"
+                  />
                     </div>
-                    <div class="opt">
-                        <div>
-                            <img src="" alt="">
-                            <button class="atten">关注</button>
-                        </div>
-                        <div class="dsp">
-                            <!-- 点赞 -->
-                            <span>
-                                <button @click=" ">
-                                    <span class="iconfont icon-dianzan"></span>
-                                    <span>123</span>
-                                </button>
-                            </span>
-                            <!-- 收藏 -->
-                            <span>
-                                <button @click=" ">
-                                    <span class="iconfont icon-shoucang"></span>
-                                    <span>12</span>
-                                </button>
-                            </span>
-                            <!-- 评论 -->
-                            <span class="comment">
-                                <!-- 评论图标 -->
-                                <button @click="display">
-                                    <span class="iconfont icon-pinglun"></span>
-                                    <span>12</span>
-                                </button>
-                            </span>
-                        </div>
+                    <div class="text">
+                        <h4>{{articInfo.txt}}</h4>
                     </div>
                 </el-main>
-                <el-footer v-show="isVisible">
-                    <Footer/>
-                </el-footer>
+                <el-divider></el-divider>
+                 <el-footer>
+                    <div class="type">
+                       <el-tag>{{articInfo.type}}</el-tag>
+                    </div>
+                     <div class="footer">
+                                <!-- 点赞 -->
+                                <span>
+                                    <el-button type="primary" link><i class="iconfont icon-dianzan_kuai"></i></el-button>
+                                    {{(articInfo.likeNub === null ? 0 : articInfo.likeNub)}}
+                                </span>
+                                <!-- 收藏 -->
+                                <span>
+                                    <el-button type="primary" link><i class="iconfont icon-shoucang"></i></el-button>
+                                    {{11}}
+                                </span>
+                                <!-- 评论 -->
+                                <span>
+                                    <el-button type="primary" link><i class="iconfont icon-pinglun1"></i></el-button>
+                                    {{articInfo.comments.length}}
+                                </span>
+                        </div>
+                 </el-footer>
             </el-container>
-            <el-aside style="width: 20%;">
-                <Aside style="padding-left: 10px;"/>
+            <el-aside style="width: auto;">
+                <Aside style="margin-left: 10px;" 
+                :username="articInfo.user.username"
+                :headportai="articInfo.user.headportai"
+                :attentNub="articInfo.user.attentNub"
+                :followNub="articInfo.user.followNub"
+                :articleNub="articInfo.user.articleNub"
+                />
             </el-aside>
+            
         </el-container>
-    </div>
+    </el-card>
 </template>
 
 <script setup>
 import Aside from './Aside.vue'
-import Footer from './Footer.vue'
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, ref } from 'vue'
+import { getArticleComments_ } from '@/utils/article/getArticleComments';
+const props = defineProps(['articleId'])
+const articInfo = ref(
+  {
+    head:'',
+    summary:'',
+    cover:'',
+    releasetime:'',
+    txt:'',
+    type:'',
+    likeNub:'',
+    comments:'',
+    user:{
+        username:'',
+        headportai:'',
+        attentNub:'',
+        followNub:'',
+        articleNub:''
+    }
+  }
+)
 
+onBeforeMount(async () => {
+    const {data:res} = await getArticleComments_(props.articleId)   
+  articInfo.value.head = res.head
+  articInfo.value.summary = res.summary
+  articInfo.value.cover = res.cover
+  articInfo.value.releasetime = res.releasetime
+  articInfo.value.txt = res.txt
+  articInfo.value.type = res.type
+  articInfo.value.likeNub = res.likeNub
+  articInfo.value.userId = res.user.userid
+  articInfo.value.comments = res.comments
+  articInfo.value.user.username = res.user.username
+  articInfo.value.user.headportai = res.user.headportai
+  articInfo.value.user.articleNub = res.user.articleNub
+  articInfo.value.user.attentNub = res.user.attentNub
+  articInfo.value.user.likeNub = res.user.likeNub
+  articInfo.value.user.followNub = res.user.followNub
+})
 //点击评论 footer评论展示
 const isVisible = ref('true')
 function display() {
@@ -73,7 +114,7 @@ function display() {
 
 </script>
 
-<style>
+<style scoped>
 .el-aside {
     padding: 20px 15px 0 0;
 }
@@ -82,58 +123,17 @@ function display() {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* width: 986px; */
-    /* overflow-x: hidden; */
-}
-
-.header div .name {
-    display: inline-block;
-    text-align: center;
-    margin-left: 15px;
 }
 
 .opt {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* background-color: bisque; */
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    height: 50px;
+    margin-top: 100px;
+}
+
+.footer {
     margin-top: 10px;
 }
-
-.opt img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    vertical-align: middle;
-}
-
-.opt .atten {
-    border-radius: 17px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-left: 7px;
-}
-
-.dsp>span {
-    margin-right: 20px;
-    cursor: pointer;
-}
-
-.dsp .comment {
-    margin-right: 90px;
-}
-
-/* 评论按钮 */
-.dsp button {
-    border: 0;
-    background-color: #fff;
-    cursor: pointer;
-}
-
-.dsp button span {
-    font-size: 21px;
+.footer > span {
+    margin-right: 10px;
 }
 </style>

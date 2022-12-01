@@ -10,16 +10,15 @@
     v-if="item.user.userid != nowUserId"
     >
       <div style="min-height: 280px">
-        <router-link to="#"
-          ><h3>{{ item.head }}</h3></router-link
-        >
+        <router-link to=""><h3 @click="toArticleDetails(item.articleid)">{{ item.head }}</h3></router-link>
         <el-divider /><!--这里是分割线-->
         <el-descriptions title="" column="1">
           <el-descriptions-item class="img" v-if="item.cover">
             <div class="demo-image">
               <div class="block">
-                <router-link to="#">
+                <router-link to="">
                   <el-image
+                  @click="toArticleDetails(item.articleid)"
                     style="width: 120px; height: 120px"
                     :src="item.cover"
                     fit="contain"
@@ -33,8 +32,8 @@
           label="" 
           label-align="left" 
           class="summary">
-            <router-link to="#">
-              <p>
+            <router-link to="">
+              <p @click="toArticleDetails(item.articleid)">
                 {{ item.summary }}
               </p>
             </router-link>
@@ -46,8 +45,8 @@
           class="txt"
             v-if="articleVisible === index"
           >
-            <router-link to="#">
-              <p>
+            <router-link to="">
+              <p @click="toArticleDetails(item.articleid)">
                 {{ item.txt }}
               </p>
             </router-link>
@@ -121,7 +120,7 @@
                 @click="showComments(index, item.articleid)"
               >
                 <i class="iconfont icon-pinglun1" style="font-size: 15px"></i>
-                <!--                         {{ commentVisible === index ? comments.length : 0}} -->
+              <!--   {{ commentVisible === index ? comments.length : 0}} -->
               </el-tag>
             </span>
           </el-tooltip>
@@ -178,6 +177,7 @@ import { getUserLike_ } from "../../../utils/user/getUserLike";
 import { collect_ } from "../../../utils/user/collect";
 import { like_ } from "../../../utils/user/like";
 import { valueEquals } from "element-plus";
+import router from "../../../router";
 const article = ref({
   posts: [],
 });
@@ -205,7 +205,9 @@ onBeforeMount(async () => {
   getUserCollection();
   getUserLike();
 });
-
+const toArticleDetails = (articId) => {
+  router.push(`/homePage/articleDetails/${articId}`)
+}
 const addComment = (val) => {
   comments.value.unshift(val)
 }

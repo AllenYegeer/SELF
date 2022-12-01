@@ -40,7 +40,7 @@ function attent(userId,isAttent,id){    //关注
     return get(`/user/attent/${userId}/${id}/${isAttent}`)
 }
 
-function getArticleComments(id){        //得到文章的评论
+function getArticleComments(id){    //得到文章的评论
     return get(`/article/${id}`)
 } 
 function addComment(data){  //发表评论
