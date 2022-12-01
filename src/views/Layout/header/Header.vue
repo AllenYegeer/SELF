@@ -1,12 +1,12 @@
 <template>
   <div class="hd">
     <div class="logo">
-      <img src="../../../assets/logo/logo.png" alt="" width="120" height="45" />
+      <img src="@/assets/logo/logo.png" alt="" width="120" height="45" />
     </div>
     <div class="h-nav">
       <ul>
         <li @click="changeActive_(1)">
-          <router-link to="/homePage" :class="{ active: isActive == 1 }"
+          <router-link :to="'/homePage/' + home" :class="{ active: isActive == 1 }"
             >首页</router-link
           >
         </li>
@@ -16,17 +16,17 @@
           >
         </li> -->
         <li @click="changeActive_(3)">
-          <router-link to="#" :class="{ active: isActive == 3 }"
+          <router-link :to="('/homePage/' + learning)" :class="{ active: isActive == 3 }"
             >学习</router-link
           >
         </li>
         <li @click="changeActive_(4)">
-          <router-link to="#" :class="{ active: isActive == 4 }"
+          <router-link :to="('/homePage/' + life)" :class="{ active: isActive == 4 }"
             >生活</router-link
           >
         </li>
         <li @click="changeActive_(5)">
-          <router-link to="#" :class="{ active: isActive == 5 }"
+          <router-link :to="('/homePage/' + job)" :class="{ active: isActive == 5 }"
             >求职</router-link
           >
         </li>
@@ -78,11 +78,13 @@ import { Edit, Search } from "@element-plus/icons-vue";
 import profile from '@/components/profile/index.vue'
 const select = ref("");
 const search = ref("");
-/* const imgUrl = ref("");
-const visBeforLogin = ref(true); */
 const props = defineProps(["isActive"]);
 const emit = defineEmits(["changeActive"]);
 const isActive = computed(() => props.isActive);
+const home = ref('首页')
+const learning = ref('学习')
+const life = ref('生活')
+const job = ref('求职')
 const changeActive_ = (num) => {
   emit("changeActive", num);
 };
@@ -151,13 +153,16 @@ a:hover {
         margin-left: 50px;
     } */
 
+
 .hd-search {
   display: flex;
   height: 35px;
   overflow: hidden;
   border-radius: 20px;
   border: 1px solid #efefef;
-  margin-top: 8px;
+  margin-top: 5px;
+  box-shadow: 0 2px 1px rgb(0 0 0 / 10%);
+  width: 27vw;
 }
 .user {
   border-radius: 50%;
@@ -171,5 +176,16 @@ a:hover {
 .hd .article {
   display: inline-block;
   margin: 10px 0 15px 10px;
+}
+</style>
+<style>
+.hd-search div.el-input__wrapper {
+  box-shadow: 0 0 0 #fff;
+}
+
+.hd-search div.el-input-group__append {
+  box-shadow: none;
+  height: 35px;
+  background-color: white;
 }
 </style>

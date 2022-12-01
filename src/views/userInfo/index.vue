@@ -14,24 +14,23 @@ import { getUserFans_ } from "../../utils/user/getUserFans";
 import { getUserInfo_ } from "../../utils/user/getUserInfo";
 import { onBeforeMount, ref } from "@vue/runtime-core";
 import store from "../../store";
-import { onBeforeRouteUpdate, useRouter } from 'vue-router'
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 const loadingVisible = ref(true);  //加载的可见性
 const userId = ref(0)
-onBeforeRouteUpdate( async () => {
+onBeforeRouteUpdate( async (to,from) => {  //路由更改时
     loading()
+    if (to.params.id)
+    getUserInfo(userId.value ||to.params.id)
+})
+onBeforeMount(() => { 
+  if (useRoute().params.id){
+    userId.value = useRoute().params.id
+    getUserInfo(userId.value)
+  }else{
     userId.value = sessionStorage.getItem('userId')
     getUserInfo(userId.value)
-})
-onBeforeMount(() => {  //当路由更改时
-  const router = useRouter()
-  if (router.currentRoute.value.query.userId)  //获取当前的路由传参的用户id
-   {
-        sessionStorage.setItem('otherUserId',router.currentRoute.value.query.userId)  
-        //存储路由中的id
-   }
-  userId.value = sessionStorage.getItem('otherUserId')
+  }
   loading()
-  getUserInfo(userId.value);
 });
 
 const loading = () => {  //页面加载

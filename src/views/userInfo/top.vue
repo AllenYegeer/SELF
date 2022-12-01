@@ -57,12 +57,12 @@
               <div class="num_number">{{ props.info.attentNub }}</div>
               <span class="num_text">关注</span>
           </div>
-          <div
-          @click="toArticlePage()"
-          >
-              <div class="num_number">{{ props.info.articleNub }}</div>
-              <span class="num_text">作品</span>
-          </div>
+            <div>
+                <router-link :to="('/homePage/Articles/' + props.userId)">
+                  <div class="num_number">{{ props.info.articleNub }}</div>
+                  <span class="num_text">作品</span>
+                </router-link>
+            </div>
         </div>
       </div>
     </div>
@@ -78,9 +78,9 @@ import router from "@/router";
 import store from "../../store";
 const props = defineProps(["info", "userId"]);
 const emit = defineEmits(["changeVisible"]);
-const userId = sessionStorage.getItem("userId");
 const imageUrl = ref();
 const button_visiable = ref(false);
+const userId = sessionStorage.getItem('userId')
 onBeforeMount(() => {
   imageUrl.value = sessionStorage.getItem("imgUrl");
 });
@@ -106,7 +106,6 @@ const updateHeadPortrait = async (data, url) => {
     sessionStorage.setItem("imgUrl", url);
     store.commit("updateUrl", url);
     success("头像修改成功");
-    //router.push('/homePage/userInfo')
   } else error("头像修改失败");
 };
 
@@ -135,9 +134,6 @@ const toAttenion =  () => { //跳转用户的关注页面
   }
 }
 
-const toArticlePage = () => { //跳转到用户的作品界面
-  router.push(`/homePage/myArticle/${props.userId}`)
-}
 </script>
 
 <style scoped>

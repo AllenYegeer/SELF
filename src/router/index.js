@@ -17,10 +17,10 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: () => import('@/views/Layout/index.vue'),
-      redirect: '/homePage',
+      redirect: '/homePage/首页',
       children: [
         {
-          path: '/homePage',
+          path: '/homePage/:name',
           name: 'homePage',
           component: () => import('@/views/homePage/article/index.vue')
         }
@@ -32,7 +32,7 @@ const router = createRouter({
         }
         ,
         {
-          path: '/homePage/myArticle/:id',
+          path: '/homePage/Articles/:id',
           name: 'myArticle',
           component: () => import('@/views/myArticle/index.vue')
         },
@@ -42,7 +42,7 @@ const router = createRouter({
           component:() => import('../views/homePage/article/particulars/index.vue')
         },
         {
-          path: '/homepage/myCollectedArticle/:id',
+          path: '/homepage/Article/:name',
           name: 'myCollectedArticle',
           component: () => import('@/components/article/index.vue')
         },
@@ -53,7 +53,7 @@ const router = createRouter({
         }
         ,
         {
-          path: '/homePage/userInfo',
+          path: '/homePage/userInfo/:id',
           name: 'homePage_userInfo',
           component: () => import('@/views/userInfo/index.vue'),
           children:[

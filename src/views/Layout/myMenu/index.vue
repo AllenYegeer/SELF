@@ -6,25 +6,26 @@
     text-color="#409EFF"
   >
       <el-menu-item index='/homePage/userInfo'
-      :route="{name:'homePage_userInfo',query:{userId:userId}}"
+      :route="('/homePage/userInfo/' + userId)"
       @click="changeActive_">
         <i class="iconfont icon-gerenziliao"></i>
         <span>个人资料</span>
       </el-menu-item>
 
-      <el-menu-item index="" @click="changeActive_();toArticlePage()">
+      <el-menu-item :index="('/homePage/Articles/' + userId)" @click="changeActive_()">
         <i class="iconfont icon-chuangzuo"></i>
         <span>我的创作</span>
       </el-menu-item>
-      <el-menu-item index="" @click="changeActive_();toCollectionPage()">
+
+      <el-menu-item index="/homepage/Article/myCollect" @click="changeActive_()">
         <i class="iconfont icon-shoucang"></i>
         <span>我的收藏</span>
       </el-menu-item>
 
-      <el-menu-item index="" @click="changeActive_();toLikeArticlePage()" style="border-bottom:2px solid #E3E5E7">
-        <i class="iconfont icon-dianzan_kuai"></i>
-        <span>我的点赞</span>
-      </el-menu-item>
+        <el-menu-item index="/homepage/Article/myLike" @click="changeActive_()" style="border-bottom:2px solid #E3E5E7">
+          <i class="iconfont icon-dianzan_kuai"></i>
+          <span>我的点赞</span>
+        </el-menu-item>
 
       <el-menu-item  index='/home' @click="loginOut" >
         <i class="iconfont icon-dingbudaohang-zhangh"></i>
@@ -49,17 +50,6 @@ const changeActive_ = async () => {  //改变header下底
   emit('changeActive',-1)
 }
 
-const toArticlePage = async () => {   //点击去文章界面
-  router.push(`/homePage/myArticle/${userId}`)
-}
-
-const toCollectionPage = async () => {  //点击去收藏页面
-  router.push(`/homepage/myCollectedArticle/${1}`)
-}
-
-const toLikeArticlePage = async () => { //点击跳转去点赞页面
-  router.push(`/homepage/myLikedArticle/${2}`)
-}
 const loginOut = () => {   //退出登录
     sessionStorage.clear()  //清空
     router.push('/enterTOHome')

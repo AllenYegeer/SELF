@@ -7,7 +7,7 @@
               <div class="header">
                 <h3>{{item.head}}</h3>
                 <el-button  
-                v-if="otherUserId === userId"
+                v-if="curUserId === userId"
                 type="danger" 
                 circle 
                 @click="deleteArticle(index,item.articleid)">  <!-- 删除按钮 -->
@@ -84,6 +84,7 @@ const myArticle = ref(  //我的文章信息
 const idx = ref(0)
 const visible = ref(false)
 const userId = ref()
+const curUserId = sessionStorage.getItem('userId')
 const otherUserId = ref()
 const changePage = (num) => { //点击页码切换
   idx.value = num - 1
@@ -117,8 +118,8 @@ const deleteArticle = (index,articId) => {  //删除文章
     })
 }
 
-onBeforeRouteUpdate( async () => {  //刷新路由
-    otherUserId.value = userId.value
+onBeforeRouteUpdate( async (to,from) => {  //刷新路由
+    userId.value = to.params.id
     const myArticles = await getUserAtricle_(userId.value)  
     myArticle.value.posts = myArticles.data
     myArticle.value.total = myArticles.data.length
@@ -127,9 +128,8 @@ onBeforeRouteUpdate( async () => {  //刷新路由
     }
 })
 onBeforeMount(async () => {
-    userId.value = sessionStorage.getItem('userId')  //当前登陆用户的id
-    otherUserId.value = useRoute().params.id    //当前其他用户的id 
-    const myArticles = await getUserAtricle_(otherUserId.value)  
+    userId.value = useRoute().params.id    //当前其他用户的id 
+    const myArticles = await getUserAtricle_(userId.value)  
     myArticle.value.posts = myArticles.data
     myArticle.value.total = myArticles.data.length
     if (myArticle.value.total != 0){

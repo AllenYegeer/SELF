@@ -23,14 +23,19 @@ const articles = ref([])
 const idx = ref(0)
 const child_ = ref()
 const loading = ref(false)
-onBeforeRouteUpdate(() => {
-    console.log(22222);
+onBeforeRouteUpdate((to,from) => {
+    if (to.params.name == 'myLike'){
+        getUserCollection()
+    }else if (to.params.name == 'myCollect'){
+        getUserLike()
+    }
 })
 onBeforeMount(() => {
     userId.value = sessionStorage.getItem('userId')
-    if(useRoute().params.id == 1){
+    console.log(useRoute().params.name);
+    if(useRoute().params.name == 'myLike'){
         getUserCollection()
-    }else if (useRoute().params.id == 2){
+    }else if (useRoute().params.name == 'myCollect'){
         getUserLike()
     }
     loading_()

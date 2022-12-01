@@ -1,7 +1,7 @@
 <template>
     <div class="author">
       <!-- 头像 -->
-      <img src=" " alt="" style="margin:0 20px"/>
+      <img :src="headportait" alt="" style="margin:0 20px"/>
       <span class="username">{{username}}</span>
     </div>
     <div class="nav">
@@ -36,11 +36,7 @@ const props = defineProps(['username',
 'attentNub',
 'followNub',
 'articleNub',
-'headportai'])
-onBeforeMount(async () => {
-    console.log(props.articleNub);
-    console.log(props);
-})
+'headportait'])
 </script>
 
 <style scoped>

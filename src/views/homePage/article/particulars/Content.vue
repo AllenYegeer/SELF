@@ -52,7 +52,7 @@
             <el-aside style="width: auto;">
                 <Aside style="margin-left: 10px;" 
                 :username="articInfo.user.username"
-                :headportai="articInfo.user.headportai"
+                :headportait="articInfo.user.headportait"
                 :attentNub="articInfo.user.attentNub"
                 :followNub="articInfo.user.followNub"
                 :articleNub="articInfo.user.articleNub"
@@ -80,7 +80,7 @@ const articInfo = ref(
     comments:'',
     user:{
         username:'',
-        headportai:'',
+        headportait:'',
         attentNub:'',
         followNub:'',
         articleNub:''
@@ -89,7 +89,7 @@ const articInfo = ref(
 )
 
 onBeforeMount(async () => {
-    const {data:res} = await getArticleComments_(props.articleId)   
+  const {data:res} = await getArticleComments_(props.articleId)  
   articInfo.value.head = res.head
   articInfo.value.summary = res.summary
   articInfo.value.cover = res.cover
@@ -100,7 +100,7 @@ onBeforeMount(async () => {
   articInfo.value.userId = res.user.userid
   articInfo.value.comments = res.comments
   articInfo.value.user.username = res.user.username
-  articInfo.value.user.headportai = res.user.headportai
+  articInfo.value.user.headportait = res.user.headportait
   articInfo.value.user.articleNub = res.user.articleNub
   articInfo.value.user.attentNub = res.user.attentNub
   articInfo.value.user.likeNub = res.user.likeNub

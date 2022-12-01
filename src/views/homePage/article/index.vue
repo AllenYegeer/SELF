@@ -128,7 +128,7 @@
 
           <el-dropdown>
             <!-- 头像 -->
-            <router-link :to="{name:'homePage_userInfo',query:{userId:item.user.userid}}">
+            <router-link :to="('/homePage/userInfo/' + item.user.userid)">
                 <span style="margin-left: 20px">
                   <img
                     class="img"
@@ -178,6 +178,7 @@ import { collect_ } from "../../../utils/user/collect";
 import { like_ } from "../../../utils/user/like";
 import { valueEquals } from "element-plus";
 import router from "../../../router";
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from "vue-router";
 const article = ref({
   posts: [],
 });
@@ -196,14 +197,20 @@ const load = () => {
   if(3 + count.value < article.value.posts.length){    
     count.value++;
   }
-  
 };
+
+onBeforeRouteUpdate((to,from) => {
+  console.log(to.params.name);
+  
+  getposts(to.params.name);
+})
+
 onBeforeMount(async () => {
   nowUserId.value = sessionStorage.getItem('userId')
   getUserAttentionId();
-  getposts();
+  getposts(useRoute().params.name);
   getUserCollection();
-  getUserLike();
+  getUserLike(); 
 });
 const toArticleDetails = (articId) => {
   router.push(`/homePage/articleDetails/${articId}`)
@@ -231,9 +238,9 @@ const showComments = (idx, id) => {
     error("请先登陆");
   }
 };
-const getposts = async () => {
+const getposts = async (name) => {
   //得到帖子
-  const data = await getPost_(1, 1000, "");
+  const data = await getPost_(1, 1000, name === '首页' ? '' : name);
   article.value.posts = data.records;
   
 };

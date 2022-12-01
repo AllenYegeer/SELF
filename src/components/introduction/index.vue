@@ -1,7 +1,7 @@
 <template>
   <div class="PersonTop">
     <div class="header">
-     <router-link :to="{name:'homePage_userInfo',query:{userId:props.id}}">
+     <router-link :to="('/homePage/userInfo/' + id)">
         <div class="img">
             <img
               :src="info.headportait"
