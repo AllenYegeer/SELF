@@ -56,6 +56,7 @@ import {getUserInfo_} from '@/utils/user/getUserInfo'
 import { onBeforeMount, onMounted, ref} from '@vue/runtime-core'
 import {attent_} from '@/utils/user/attent'
 import {success,error,warn} from '@/utils/popup/message'
+import store from '../../store'
 const props = defineProps(['userAttenionId','id'])
 var userId
 const userInfo = ref()
@@ -77,11 +78,13 @@ const attenion = async () => {
         const res = await attent_(userId,1,props.id)  //关注
         if (res.code === '100'){
           props.userAttenionId.push(props.id)
+          store.commit('addUserAttendInfo',props.id)
         }
     }else{
         const res = await attent_(userId,-1,props.id) //取消关注
         if (res.code === '100'){
           props.userAttenionId.splice(idx,1)
+          store.commit('removeUsedAttendInfo',props.id)
         }
     }
   }else{

@@ -3,13 +3,11 @@
       style="
         display: flex;
         justify-content: center;
-        background-color: rgb(239, 239, 239);
+       
       "
     >
       <div
         style="
-          margin: 30px 0;
-          padding: 10px 30px;
           background: #ffffff;
         "
       >
@@ -110,7 +108,7 @@ const user_info = ref({
 });
 
 const checkUsername = (rule: any, value: any, callback: any) => {
-  if (!value) {
+  if (value === '') {
     return callback(new Error("请输入用户名"));
   } else {
     callback();
@@ -118,23 +116,25 @@ const checkUsername = (rule: any, value: any, callback: any) => {
 };
 
 const checkAge = (rule: any, value: any, callback: any) => {
-  if (!value) {
+  if (value === '') {
     return callback(new Error("请输入年龄"));
   }
   setTimeout(() => {
     if (!Number.isInteger(value)) {
       return callback(new Error("年龄只能是数字"));
-    }
+    }else if(value < 14 || value > 75){
+      return callback(new Error('请输入正确的年龄,只能在14 - 75'))
+    }else callback()
   }, 500);
 };
 
 const checkPhone = (rule: any, value: any, callback: any) => {
-  if (!value) return callback(new Error("请输入手机号"));
+  if (value === '') return callback(new Error("请输入手机号"));
   else if (value.toString().length != 11) {
     return callback(new Error("手机号的长度必须是11位"));
   } else if (!Number.isInteger(value)) {
     callback(new Error("手机号只能是数字"));
-  }
+  }else callback()
 };
 const checkPass = (rule: any, value: any, callback: any) => {
   if (value === "") {
@@ -154,27 +154,22 @@ const rules = reactive({
   password: [{ validator: checkPass, trigger: "blur" }],
   age: [{ validator: checkAge, trigger: "blur" }],
 });
+
 const upLoadInfo = async () => {
-  const result = await register_({
+  const res = await register_({
     username: user_info.value.username,
     gender: user_info.value.sex,
     phone: user_info.value.phoneNum,
     password: user_info.value.password,
     age: user_info.value.age,
   });
-  if (result.code === '100'){
-      success('注册成功')
-      sessionStorage.setItem('userId', result.data.userid)  //设置用户id
-      sessionStorage.setItem('imgUrl', result.data.headportait) //设置头像url
-      sessionStorage.setItem('userName',result.data.username)  //设置用户名
-      router.push('/home')
-      emit('changeVisible',1)
-      window.location.reload()
+  if (res.code === '100'){
+     router.push('/home')
+      emit('changeVisible', 1)
+      /* window.location.reload() */
       Object.keys(user_info.value).forEach((key) => {
-        user_info.value[key] = ''
+          user_info.value[key] = ''
       })
-  }else{
-      error(result.msg)
   }
 };
 </script>

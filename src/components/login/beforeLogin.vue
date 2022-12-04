@@ -7,18 +7,23 @@
                 title="登陆"
                 :before-close="changeLoginVisible"
                 width="50%"
+                class="dl"
                 append-to-body="true">
                 <Login @changeVisible="changeLoginVisible"></Login>
             </el-dialog>
-            <el-dialog
-                v-model="visibleRegister"
-                title="注册"
-                :before-close="changeRegisterVisible"
-                append-to-body="true"
-                style="margin:0 auto"
-            >
-                <Register @changeVisible="changeRegisterVisible"></Register>
-            </el-dialog>
+           
+                <el-dialog
+                    v-model="visibleRegister"
+                    title="注册"
+                    :before-close="changeRegisterVisible"
+                    append-to-body="true"
+                    style="margin:20px auto"
+                    width="35%"
+                    class="zc"
+                >
+                    <Register @changeVisible="changeRegisterVisible"></Register>
+                </el-dialog>
+           
         <!-- </div> -->
         <div class="footer">
             首次使用？<span class="register" @click="changeRegisterVisible">点我注册</span>
@@ -76,5 +81,20 @@ import router from '@/router';
 
     .el-dialog {
         border-radius: 30px;
+        min-width: 400px;
     }
-</style>>
+
+    .zc :deep(.saveAsDialog) {
+    width: 480px !important;
+    }
+
+    
+</style>
+<style>
+    .zc{
+        min-width: 400px;
+    }
+    .dl{
+        min-width: 550px;
+    }
+</style>

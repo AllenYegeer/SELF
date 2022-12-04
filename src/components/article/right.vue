@@ -8,6 +8,9 @@
             <div style="min-height: auto">
               <div class="header">
                 <h3>{{item.head}}</h3>
+                <el-button type="primary" v-if="(diffence === 2)" @click="cancel(item.articleid,index)">取消收藏</el-button>
+                
+                <el-button type="primary" v-else @click="cancel(item.articleid,index)">取消点赞</el-button>
               </div>
               <el-divider /><!--这里是分割线-->
               <div>
@@ -66,17 +69,30 @@ import { onBeforeMount } from "@vue/runtime-core";
 import empty from '@/components/empty/index.vue'
 import Pageination from '@/components/Pageination/index.vue' //分页
 import { onBeforeRouteUpdate, useRoute } from "vue-router";
-
-const props = defineProps(['articles'])
+import { like_ } from "@/utils/user/like";
+import { collect_ } from "@/utils/user/collect";
+import { like } from "../../request/tmp";
+const props = defineProps(['articles','diffence'])
 const emit = defineEmits(['changeIdx'])
-
+const userId = sessionStorage.getItem('userId')
 const idx = ref(0)
-
 const changePage = (num) => { //点击页码切换
   idx.value = num - 1
   emit('changeIdx',idx.value)
 }
-
+const cancel = async (articId,idx) => {
+  if (props.diffence === 1) {
+    const res =  await like_(userId,articId,-1)
+    if (res.code === '100'){
+      props.articles.splice(idx,1)
+    }
+  }else{
+    const res = await collect_(userId,articId,-1)
+    if (res.code === '100'){
+      props.articles.splice(idx,1)
+    }
+  }
+}
 </script> 
 
 <style scoped>

@@ -37,9 +37,19 @@
     </div>
     <el-divider></el-divider>
     <div class="footer">
-        <el-button type="primary">
+        <el-button type="primary"
+        @click="Attend"
+        v-if="attentVis"
+        >
           <el-icon><Plus /></el-icon>
           <span>关注他</span>
+        </el-button>
+        <el-button type="info"
+        @click="cancelAttend"
+          v-else
+        >
+        <el-icon><Select /></el-icon>
+          <span>已关注</span>
         </el-button>
         <el-button type="success"><el-icon><Message/></el-icon><span></span>私信他</el-button>
     </div>
@@ -50,6 +60,8 @@
 import { ref } from "@vue/reactivity";
 import { computed, onBeforeMount, watch } from "@vue/runtime-core";
 import { getUserInfo } from "@/request/tmp";
+import store from "@/store";
+import { attent_ } from "@/utils/user/attent";
 const props = defineProps(['article'])
 const info = ref()
 const uesrname = ref()
@@ -57,9 +69,24 @@ const url = ref()
 const followNub = ref()
 const attentNub = ref()
 const articleNub = ref()
+const userId = sessionStorage.getItem('userId')
+const nowUserId = ref()
+const attentVis = ref()
 onBeforeMount(() => {
+  console.log(props.article);
   refsh()
 })
+const Attend = async () => {   //点击关注
+  attentVis.value = false
+  const res = await attent_(userId,1,nowUserId.value)
+  store.commit('addUserAttendInfo',nowUserId.value)
+}
+
+const cancelAttend = async () => {  //取消关注
+  attentVis.value = true
+  const res = await attent_(userId,-1,nowUserId.value)
+  store.commit('removeUsedAttendInfo',nowUserId.value)
+}
 const refsh =  () => {
   setTimeout(() => {
   uesrname.value = props.article.user.username
@@ -67,6 +94,8 @@ const refsh =  () => {
   followNub.value = props.article.user.followNub
   attentNub.value = props.article.user.attentNub
   articleNub.value = props.article.user.articleNub
+  nowUserId.value = props.article.user.userid
+  attentVis.value = store.state.userAttendInfo.indexOf(nowUserId.value) === -1 ? true : false;
 },1000);
 }
 defineExpose({   //抛出方法，让父亲调用
@@ -124,6 +153,7 @@ defineExpose({   //抛出方法，让父亲调用
 
 
 .footer > .el-button {
+    width: 6vw;
     text-align: center;
 }
 </style>

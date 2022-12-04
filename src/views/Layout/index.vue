@@ -2,7 +2,6 @@
    <div class="homePage">
     <Header :isActive="isActive" @changeActive="changeActive" style="position:sticky; top:0;z-index: 1;"/>
     <div class="right">
-        <!-- <MyMenu class="menu" @changeActive="changeActive"/> -->
         <div><router-view></router-view></div>
     </div>
    </div>

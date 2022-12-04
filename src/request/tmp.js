@@ -62,10 +62,14 @@ function like(userId, articleId, is_like){    //点赞
     return get(`/user/like/${userId}/${articleId}/${is_like}`)
 }
 
-function deleteArticle(articleId){
+function deleteArticle(articleId){   //删除文章
     return delete_('/article',{
         deleteId: articleId
     })
+}
+
+function search(key){  //搜索接口
+    return get(`/article/search?val=${key}`)
 }
 export {
     getPosts,
@@ -84,5 +88,6 @@ export {
     collect,
     getUserLike,
     like,
-    deleteArticle
+    deleteArticle,
+    search
 }

@@ -2,10 +2,10 @@
     <div class="article"
     v-loading="loading"
     >
-         <div class="right">
-            <Right :articles="articles" @changeIdx="changeIdx"></Right> 
+         <div :class="{empty:articles.length === 0,right:articles.length != 0}">
+            <Right :articles="articles" :diffence="diffence" @changeIdx="changeIdx"></Right> 
          </div>
-        <div class="left">
+        <div class="left" v-if="(articles.length != 0)">
             <Left :article="articles[idx]" ref="child_"></Left>
         </div>
     </div>
@@ -23,20 +23,25 @@ const articles = ref([])
 const idx = ref(0)
 const child_ = ref()
 const loading = ref(false)
+const diffence = ref()
 onBeforeRouteUpdate((to,from) => {
     if (to.params.name == 'myLike'){
-        getUserCollection()
+        getUserLike()      
+        diffence.value  = 1
     }else if (to.params.name == 'myCollect'){
-        getUserLike()
+        getUserCollection() 
+        diffence.value  = 2
     }
 })
 onBeforeMount(() => {
     userId.value = sessionStorage.getItem('userId')
     console.log(useRoute().params.name);
     if(useRoute().params.name == 'myLike'){
-        getUserCollection()
+        getUserLike()  //得到用户的点赞
+        diffence.value  = 1
     }else if (useRoute().params.name == 'myCollect'){
-        getUserLike()
+        getUserCollection()  //得到用户的收藏
+        diffence.value = 2
     }
     loading_()
 })
@@ -67,7 +72,9 @@ const loading_ = async () => {
     .article {
         display: flex;
     }
-
+    .empty{
+        margin:0 auto;
+    }
     .right{
         margin: 20px 10px;
         box-shadow: 0 0 28px 3px rgba(189, 192, 191, 0.5);

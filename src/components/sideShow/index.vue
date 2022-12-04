@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     enter(){
-        this.$router.push('/home',replace)
+        this.$router.push('/waitting',replace)
     }
   }
 };

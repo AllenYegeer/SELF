@@ -23,9 +23,15 @@
           </div>
         </div>
         <div class="fanorfollow_botton">
-          <el-button type="success"
-            ><span style="margin-right: 10px"><i class="iconfont icon-sixin"></i></span>私信</el-button
-          >
+          <el-button type="success">
+            <span style="margin-right: 10px"><el-icon><ChatDotRound /></el-icon></span>私信
+          </el-button>
+          <el-button type="primary" v-if="(store.state.userAttendInfo.indexOf(item.userid) === -1)" @click="toAttend(item.userid)">
+            <span style="margin-right: 10px"><el-icon><Plus /></el-icon></span>关注
+          </el-button>
+          <el-button type="info" v-else @click="cancelAttend(item.userid)">
+            <span style="margin-right: 10px"><el-icon><Close /></el-icon></span>取消关注
+          </el-button>
         </div>
       </div>
       <div>
@@ -41,13 +47,27 @@
 <script setup>
 import { getUserAttention_ } from "@/utils/user/getUseAttenion";
 import { onMounted, ref } from "@vue/runtime-core";
+import {attent_} from '@/utils/user/attent' 
+import store from "../../store";
 const userAttentions = ref([]);
 const userId = sessionStorage.getItem("userId");
+const attentVis = ref(false)
 const getUserFans = async () => {//得到用户的粉丝
   const { data: res } = await getUserAttention_(userId);
   userAttentions.value = res
 };
 
+const toAttend = async (id) => {   //点击关注
+  attentVis.value = false
+  const res = await attent_(userId,1,id)
+  store.commit('addUserAttendInfo',id)
+}
+
+const cancelAttend = async (id) => {  //取消关注
+  attentVis.value = true
+  const res = await attent_(userId,-1,id)
+  store.commit('removeUsedAttendInfo',id)
+}
 onMounted(() => {
     getUserFans()
 });

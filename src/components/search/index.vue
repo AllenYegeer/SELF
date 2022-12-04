@@ -2,15 +2,14 @@
   <div
     class="common-layout"
     style="background: #f6f6f6;overflow: auto"
-
-    v-for="(item, index) in article.posts.slice(0,count)"
+    v-for="(item, index) in searchRes"
     :key="item.articleid"
   >
     <el-card style="margin: 20px; background: #ffffff"
     v-if="item.user.userid != nowUserId"
     >
       <div style="min-height: 280px">
-        <router-link :to="'/homePage/articleDetails/' + item.articleid"><h3>{{ item.head }}</h3></router-link>
+        <router-link :to="'/homePage/articleDetails/' + item.articleid"><h3 @click="toArticleDetails(item.articleid)">{{ item.head }}</h3></router-link>
         <el-divider /><!--这里是分割线-->
         <el-descriptions title="" column="1">
           <el-descriptions-item class="img" v-if="item.cover">
@@ -18,6 +17,7 @@
               <div class="block">
                 <router-link :to="'/homePage/articleDetails/' + item.articleid">
                   <el-image
+                  @click="toArticleDetails(item.articleid)"
                     style="width: 120px; height: 120px"
                     :src="item.cover"
                     fit="contain"
@@ -32,7 +32,7 @@
           label-align="left" 
           class="summary">
             <router-link :to="'/homePage/articleDetails/' + item.articleid">
-              <p>
+              <p @click="toArticleDetails(item.articleid)">
                 {{ item.summary }}
               </p>
             </router-link>
@@ -45,7 +45,7 @@
             v-if="articleVisible === index"
           >
             <router-link :to="'/homePage/articleDetails/' + item.articleid">
-              <p>
+              <p @click="toArticleDetails(item.articleid)">
                 {{ item.txt }}
               </p>
             </router-link>
@@ -161,58 +161,57 @@
     >
     </Comments>
   </div>
+  <empty style="margin:100px 500px;height:66.5vh" v-if="(searchRes.length === 0)"></empty>
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
 import { onBeforeMount } from "@vue/runtime-core";
-import { getPost_ } from "../../../utils/article/getPosts";
+import { getPost_ } from "@/utils/article/getPosts";
 import { getUserAttention_ } from "@/utils/user/getUseAttenion";
-import { getArticleComments_ } from "../../../utils/article/getArticleComments";
-import introuction from "../../../components/introduction/index.vue";
-import Comments from "../../../components/comments/index.vue";
-import { error, success } from "../../../utils/popup/message";
-import { getUserCollection_ } from "../../../utils/user/userCollection";
-import { getUserLike_ } from "../../../utils/user/getUserLike";
-import { collect_ } from "../../../utils/user/collect";
-import { like_ } from "../../../utils/user/like";
+import { getArticleComments_ } from "@/utils/article/getArticleComments";
+import introuction from "@/components/introduction/index.vue";
+import Comments from "@/components/comments/index.vue";
+import { error, success } from "@/utils/popup/message";
+import { getUserCollection_ } from "@/utils/user/userCollection";
+import { getUserLike_ } from "@/utils/user/getUserLike";
+import { collect_ } from "@/utils/user/collect";
+import { like_ } from "@/utils/user/like";
 import { valueEquals } from "element-plus";
-import router from "../../../router";
+import router from "@/router";
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from "vue-router";
-import store from "../../../store";
-const article = ref({
-  posts: [],
-});
+import store from "@/store";
+import {search_} from '../../utils/article/search'
+import empty from '@/components/empty/index.vue'
 const userId = sessionStorage.getItem("userId");
 const nowUserId = ref(0)
 const userAttenionId = ref([]);
-const count = ref(3); //滑动加载
+const count = ref(2); //滑动加载
 const child = ref(); //子组件
 const commentVisible = ref(); //评论窗口的可见性
 const articleVisible = ref() //帖子可见性
 const comments = ref([]); //文章的评论
 const userCllection = ref([]); //用户的收藏
 const userLike = ref([]); //用户的点赞
-const conmmentIndex = ref(0)
-/* const load = () => {
+const conmmentIndex = ref(0)   //评论的下标
+const searchRes = ref([])   //搜索结果
+const load = () => {
   if(3 + count.value < article.value.posts.length){    
     count.value++;
   }
-}; */
+};
 
 onBeforeRouteUpdate((to,from) => {
   getposts(to.params.name);
 })
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
   nowUserId.value = sessionStorage.getItem('userId')
   getUserAttentionId();
-  getposts(useRoute().params.name);
+  getposts(useRoute().params.name); 
   getUserCollection();
   getUserLike(); 
 });
-/* const toArticleDetails = (articId) => {
-  router.push(`/homePage/articleDetails/${articId}`)
-} */
+
 const addComment = (val) => {   //发表评论
   comments.value.unshift(val)
 }
@@ -237,10 +236,9 @@ const showComments = (idx, id) => {
   }
 };
 const getposts = async (name) => {
-  //得到帖子
-  const data = await getPost_(1, '', name === '首页' ? '' : name);
-  article.value.posts = data.records;
-  
+  //得到帖子 
+  const {data:res} = await search_(name)
+   searchRes.value = res
 };
 const getUserAttentionId = async () => {
   //得到用户的关注用户Id
@@ -332,20 +330,6 @@ const like = async (articleId, idx) => {
     error("请先登陆");
   }
 };
-
-const handleScroll = () => { 
-  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop // 滚动条距离顶部的距离
-  let windowHeight = document.documentElement.clientHeight || document.body.clientHeight // 可视区的高度
-  let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight //dom元素的高度，包含溢出不可见的内容
-  // 滚动条到底部的条件scrollTop + windowHeight === scrollHeight
-  /* console.log(scrollTop,windowHeight,scrollHeight); */
-  if (scrollHeight === scrollTop + windowHeight) {
-            count.value ++;
-  }
-}
-  document.addEventListener('scroll',function(){
-      handleScroll()
-})
 </script>
 
 <style scoped>

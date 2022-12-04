@@ -7,7 +7,7 @@
         :on-success="uploadSuccess"
         :on-error="failToUpload"
         style="margin: 0 10px"
-        v-if="userId === props.userId"
+        v-if="userId_ === props.userId"
       >
         <el-tooltip content="点击更换头像" placement="bottom">
           <img
@@ -33,10 +33,13 @@
             <img src="@/assets/logo/v.png" class="user-v-img" />
             <span class="user-v-font">优质媒体作者</span>
           </div>
+          <div v-if="userId_ !== props.userId">
+            <el-button v-if="attentVis" type="primary" style="color:#FFFFFF" @click="Attend"><el-icon><Plus /></el-icon>关注</el-button>
+            <el-button v-else type="info" style="color:#FFFFFF" @click="cancelAttend"><el-icon><Select /></el-icon>已关注</el-button>
+          </div>
           <el-button v-if="button_visiable" link @click="changeVisible(2)"
             ><el-icon style="margin-right: 5px"><ArrowDownBold /></el-icon
-            >个人信息</el-button
-          >
+            >个人信息</el-button>
         </div>
         <div class="user_num">
           <div
@@ -76,24 +79,26 @@ import { onBeforeMount } from "@vue/runtime-core";
 import { updateUserInfo_ } from "@/utils/user/updateUserInfo";
 import router from "@/router";
 import store from "../../store";
+import { attent_ } from "@/utils/user/attent";
 const props = defineProps(["info", "userId"]);
 const emit = defineEmits(["changeVisible"]);
 const imageUrl = ref();
 const button_visiable = ref(false);
-const userId = sessionStorage.getItem('userId')
+const userId_ = sessionStorage.getItem('userId')
+const attentVis = ref()
 onBeforeMount(() => {
   imageUrl.value = sessionStorage.getItem("imgUrl");
+  attentVis.value = (store.state.userAttendInfo.indexOf(Number(props.userId)) === -1 ? true : false)
 });
 const failToUpload = () => {
   error("图片上传失败,请重新上传!");
 };
 const uploadSuccess: UploadProps["onSuccess"] = (response, uploadFile) => {
   success("图片上传成功");
-  const userId = sessionStorage.getItem("userId");
   updateHeadPortrait(
     {
       headportait: uploadFile.response,
-      userid: userId,
+      userid: userId_,
     },
     uploadFile.response
   );
@@ -110,7 +115,7 @@ const updateHeadPortrait = async (data, url) => {
 };
 
 const changeVisible = (num) => {
-  if (userId === props.userId) {
+  if (userId_ === props.userId) {
     if (num == 1) button_visiable.value = true;
     //num == 1 不显示个人信息
     else button_visiable.value = false; //否则显示个人信息
@@ -119,7 +124,7 @@ const changeVisible = (num) => {
 };
 
 const toFanPage = () => {  //跳转粉丝页面
-  if (userId === props.userId) {
+  if (userId_ === props.userId) {
     router.push("/homePage/userInfo/userFans");
   } else {
     error('你没有权限查看其他用户的粉丝')
@@ -127,13 +132,24 @@ const toFanPage = () => {  //跳转粉丝页面
 };
 
 const toAttenion =  () => { //跳转用户的关注页面
-  if (userId === props.userId) {
+  if (userId_ === props.userId) {
     router.push("/homePage/userInfo/userAttenion");
   } else {
     error('你没有权限查看其他用户的关注')
   }
 }
 
+const Attend = async () => {   //点击关注
+  attentVis.value = false
+  const res = await attent_(userId_,1,Number(props.userId))
+  store.commit('addUserAttendInfo',Number(props.userId))
+}
+
+const cancelAttend = async () => {  //取消关注
+  attentVis.value = true
+  const res = await attent_(userId_,-1,Number(props.userId))
+  store.commit('removeUsedAttendInfo',Number(props.userId)) 
+}
 </script>
 
 <style scoped>

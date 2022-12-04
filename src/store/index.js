@@ -5,7 +5,8 @@ const store = createStore({
         return {
             url:'',
             userID:'',
-            userInfo:''
+            userInfo:'',
+            userAttendInfo:[]
         }
     },
     mutations:{  //mutations是对象,改变state中的数据
@@ -20,7 +21,16 @@ const store = createStore({
         },
         setUserInfo(state,info){
             state.userInfo = info
-            console.log(state.userInfo);
+        },
+        setUserAttendInfo(state,value){
+            state.userAttendInfo = value
+        },
+        addUserAttendInfo(state,userId){
+            state.userAttendInfo.push(userId)
+        },
+        removeUsedAttendInfo(state,id){
+            const idx = state.userAttendInfo.indexOf(id)
+            state.userAttendInfo.splice(idx,1)
         }
     },
     //通过 (srcipt中使用) this.$store / (标签中使用)$store.commit('addCount',参数) 调用addCount方法;

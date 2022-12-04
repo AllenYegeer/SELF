@@ -23,10 +23,17 @@
           </div>
         </div>
         <div class="fanorfollow_botton">
-          <el-button type="primary" @click="f"
+          <el-button type="primary" @click="toAttend(item.userid)"
+          v-if="(store.state.userAttendInfo.indexOf(item.userid) === -1)"
             ><el-icon style="margin-right: 10px"><Plus /></el-icon
             >关注</el-button
           >
+          <el-button v-else
+          type="info"
+          >
+            <el-icon><Select /></el-icon>
+              已关注
+          </el-button>
           <el-button type="success"
             ><span style="margin-right: 10px"><i class="iconfont icon-sixin"></i></span>私信</el-button
           >
@@ -45,14 +52,22 @@
 <script setup>
 import { getUserFans_ } from "@/utils/user/getUserFans";
 import { onMounted, ref } from "@vue/runtime-core";
+import {attent_} from '@/utils/user/attent'
+import store from "../../store";
 const userFans = ref([]);
 const userId = sessionStorage.getItem("userId");
+const attentVis = ref(true)
 const getUserFans = async () => {
   //得到用户的粉丝
   const { data: res } = await getUserFans_(userId);
   userFans.value = res;
 };
 
+const toAttend = async (id) => {
+  attentVis.value = false
+  const res =  await attent_(userId,1,id)
+  store.commit('addUserAttendInfo',id)
+}
 onMounted(() => {
   getUserFans();
 });
@@ -119,7 +134,4 @@ img {
   margin-top: 5px;
   cursor: pointer;
 }
-/* .fanorfollow_info_bottom :hover {
-  color: deepskyblue;
-} */
 </style>

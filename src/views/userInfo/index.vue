@@ -19,8 +19,11 @@ const loadingVisible = ref(true);  //加载的可见性
 const userId = ref(0)
 onBeforeRouteUpdate( async (to,from) => {  //路由更改时
     loading()
-    if (to.params.id)
-    getUserInfo(userId.value ||to.params.id)
+    if (to.params.id){
+        userId.value = to.params.id
+        getUserInfo(to.params.id || userId.value)
+    }
+    
 })
 onBeforeMount(() => { 
   if (useRoute().params.id){

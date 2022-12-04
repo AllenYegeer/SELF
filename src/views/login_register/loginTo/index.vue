@@ -129,13 +129,14 @@ onMounted(() => {
   display: flex;
   justify-content: space-evenly;
   height: 200px;
-  width: 600px;
-  padding: 80px 10px;
+  min-width: 500px;
+  padding: 30px 10px 80px 10px;
+  
   background-color: #FFFFFF;
   position: relative;
   top: 20%;
   margin: 0 auto;
-  border-radius: 40px;
+  
 }
 
 .loginBtn {

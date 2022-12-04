@@ -23,6 +23,11 @@ const router = createRouter({
           path: '/homePage/:name',
           name: 'homePage',
           component: () => import('@/views/homePage/article/index.vue')
+        },
+        {
+          path: '/homePage/search/:name',
+          name: 'homePageSearch',
+          component: () => import('@/components/search/index.vue')
         }
         ,
         {
@@ -97,9 +102,9 @@ const router = createRouter({
     }
     ,
     {
-      path:'/test',
-      name: 'test',
-      component: () => import('@/views/homePage/article/particulars/index.vue')
+      path:'/waitting',
+      name: 'waitting',
+      component: () => import('../components/waitting/index.vue')
     }
   ]
 })
