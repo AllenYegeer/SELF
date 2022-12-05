@@ -129,9 +129,11 @@ const search = () => {
 }
 
 .hd .logo img {
-  /* display: block; */
   height: 50px;
   width: 120px;
+  position: relative;
+  top: 50%;
+  margin-top: -25px;
 }
 
 /* @media screen and (max-width:992px){
@@ -146,10 +148,17 @@ const search = () => {
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 590px) {
   .hd .logo img {
     width: 80px;
     height: 50px;
+  }
+}
+@media screen and (max-width: 414px) {
+  .hd .logo img {
+    width: 50px;
+    height: 40px;
+    margin-top: -20px;
   }
 }
 
@@ -259,6 +268,7 @@ a:hover {
 <style>
 .hd-search div.el-input__wrapper {
   box-shadow: 0 0 0 #fff;
+  padding: 1px 0 1px 11px;
 }
 
 .hd-search div.el-input-group__append {

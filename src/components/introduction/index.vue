@@ -32,8 +32,10 @@
           <span class="num_text">关注</span>
         </div>
         <div>
-          <div class="num_number">{{info.articleNub}}</div>
-          <span class="num_text">作品</span>
+          <router-link :to="`/homePage/Articles/${id}`">
+            <div class="num_number">{{info.articleNub}}</div>
+            <span class="num_text">作品</span>
+          </router-link>
         </div>
       </div>
     </div>
@@ -78,12 +80,14 @@ const attenion = async () => {
         const res = await attent_(userId,1,props.id)  //关注
         if (res.code === '100'){
           props.userAttenionId.push(props.id)
+          info.value.followNub ++
           store.commit('addUserAttendInfo',props.id)
         }
     }else{
         const res = await attent_(userId,-1,props.id) //取消关注
         if (res.code === '100'){
           props.userAttenionId.splice(idx,1)
+          info.value.followNub --
           store.commit('removeUsedAttendInfo',props.id)
         }
     }

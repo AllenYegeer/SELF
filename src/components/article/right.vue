@@ -8,9 +8,9 @@
             <div style="min-height: auto">
               <div class="header">
                 <h3>{{item.head}}</h3>
-                <el-button type="primary" v-if="(diffence === 2)" @click="cancel(item.articleid,index)">取消收藏</el-button>
+                <!-- <el-button type="primary" v-if="(diffence === 2)" @click="cancel(item.articleid,index)">取消收藏</el-button>
                 
-                <el-button type="primary" v-else @click="cancel(item.articleid,index)">取消点赞</el-button>
+                <el-button type="primary" v-else @click="cancel(item.articleid,index)">取消点赞</el-button> -->
               </div>
               <el-divider /><!--这里是分割线-->
               <div>
@@ -47,11 +47,25 @@
                       <el-tag size="small">{{item.releasetime.slice(0,10)}}</el-tag>
                     </span>
 
-                    <span style="padding-left: 5px;margin-left:10px;margin-top:10px">
-                      <el-tag size="small">
+                    <span style="padding-left: 5px;margin-left:10px;">
+                      <!-- <el-tag size="small">
                         <i class="iconfont icon-dianzan_kuai" style="font-size:15px;"></i>
                         {{item.likeNub}}
-                      </el-tag>
+                      </el-tag> -->
+                      <likePage
+                      :likeNub="item.likeNub" 
+                      :articleid="item.articleid"
+                      ></likePage>
+                    </span>
+
+                    <span style="padding-left: 5px;margin-left:10px;">
+                      <!-- <el-tag size="small">
+                        <i class="iconfont icon-dianzan_kuai" style="font-size:15px;"></i>
+                        {{item.likeNub}}
+                      </el-tag> -->
+                      <collectPage
+                      :articleid="item.articleid"
+                      ></collectPage>
                     </span>
                   </div>              
               </div>
@@ -71,7 +85,8 @@ import Pageination from '@/components/Pageination/index.vue' //分页
 import { onBeforeRouteUpdate, useRoute } from "vue-router";
 import { like_ } from "@/utils/user/like";
 import { collect_ } from "@/utils/user/collect";
-import { like } from "../../request/tmp";
+import likePage from '@/components/like/index.vue'
+import collectPage from '@/components/collect/index.vue'
 const props = defineProps(['articles','diffence'])
 const emit = defineEmits(['changeIdx'])
 const userId = sessionStorage.getItem('userId')
@@ -80,7 +95,7 @@ const changePage = (num) => { //点击页码切换
   idx.value = num - 1
   emit('changeIdx',idx.value)
 }
-const cancel = async (articId,idx) => {
+const cancel = async (articId,idx) => {   //取消点赞或者收藏
   if (props.diffence === 1) {
     const res =  await like_(userId,articId,-1)
     if (res.code === '100'){

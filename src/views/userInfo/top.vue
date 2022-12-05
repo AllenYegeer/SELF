@@ -37,9 +37,11 @@
             <el-button v-if="attentVis" type="primary" style="color:#FFFFFF" @click="Attend"><el-icon><Plus /></el-icon>关注</el-button>
             <el-button v-else type="info" style="color:#FFFFFF" @click="cancelAttend"><el-icon><Select /></el-icon>已关注</el-button>
           </div>
-          <el-button v-if="button_visiable" link @click="changeVisible(2)"
-            ><el-icon style="margin-right: 5px"><ArrowDownBold /></el-icon
-            >个人信息</el-button>
+          <router-link :to="`/homePage/userInfo/${userId_}`">
+            <el-button v-if="button_visiable" link @click="changeVisible(2)"
+              ><el-icon style="margin-right: 5px"><ArrowDownBold /></el-icon
+              >个人信息</el-button>
+          </router-link>
         </div>
         <div class="user_num">
           <div
@@ -140,14 +142,20 @@ const toAttenion =  () => { //跳转用户的关注页面
 }
 
 const Attend = async () => {   //点击关注
+  if(userId_){
   attentVis.value = false
   const res = await attent_(userId_,1,Number(props.userId))
+  props.info.followNub ++
   store.commit('addUserAttendInfo',Number(props.userId))
+  }else{
+    error('请先登录')
+  }
 }
 
 const cancelAttend = async () => {  //取消关注
   attentVis.value = true
   const res = await attent_(userId_,-1,Number(props.userId))
+  props.info.followNub --
   store.commit('removeUsedAttendInfo',Number(props.userId)) 
 }
 </script>

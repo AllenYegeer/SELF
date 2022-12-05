@@ -2,11 +2,10 @@
   <div
     class="common-layout"
     style="background: #f6f6f6;overflow: auto"
-
     v-for="(item, index) in article.posts.slice(0,count)"
     :key="item.articleid"
   >
-    <el-card style="margin: 20px; background: #ffffff"
+    <el-card style="margin:3vh 1vw; background: #ffffff"
     v-if="item.user.userid != nowUserId"
     >
       <div style="min-height: 280px">
@@ -78,38 +77,18 @@
           </span>
   
           <span style="padding-left: 5px; margin-left: 10px; margin-top: 10px">
-            <!-- 点赞 -->
-            <el-tag
-              size="small"
-              style="cursor: pointer"
-              @click="like(item.articleid, index)"
-            >
-              <i
-                class="iconfont icon-dianzan_kuai"
-                style="font-size: 15px; transition: all 1s linear"
-                :class="{
-                  active: userLike.indexOf(item.articleid) != -1,
-                }"
-              ></i>
-              <!-- {{ item.likeNub }} -->
-            </el-tag>
+            <likepage
+             :articleid="item.articleid" 
+             :likeNub="item.likeNub"
+             ></likepage>
           </span>
           <span style="padding-left: 5px; margin-left: 10px; margin-top: 10px">
-            <!-- 收藏 -->
-            <el-tag
-              size="small"
-              style="cursor: pointer"
-              @click="cllect(item.articleid)"
-            >
-              <i
-                class="iconfont icon-shoucang"
-                style="font-size: 15px; transition: all 1s linear"
-                :class="{
-                  active: userCllection.indexOf(item.articleid) != -1,
-                }"
-              ></i>
-            </el-tag>
+            <collectpage
+              :articleid="item.articleid"
+              :collectNum="item.collectNum"
+            ></collectpage> 
           </span>
+
           <el-tooltip content="发表或查看评论">
             <span style="padding-left: 5px; margin-left: 10px; margin-top: 2px">
               <!-- 评论 -->
@@ -161,6 +140,15 @@
     >
     </Comments>
   </div>
+  <el-card
+    style="height:5.5vh;
+    margin:0 0.9vw;
+    margin-bottom:2vh
+    "
+    v-if="bottomVis"
+    v-loading="loading"
+    >
+  </el-card>
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
@@ -173,12 +161,13 @@ import Comments from "../../../components/comments/index.vue";
 import { error, success } from "../../../utils/popup/message";
 import { getUserCollection_ } from "../../../utils/user/userCollection";
 import { getUserLike_ } from "../../../utils/user/getUserLike";
-import { collect_ } from "../../../utils/user/collect";
-import { like_ } from "../../../utils/user/like";
 import { valueEquals } from "element-plus";
 import router from "../../../router";
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from "vue-router";
 import store from "../../../store";
+import likepage from '@/components/like/index.vue'
+import collectpage from '@/components/collect/index.vue'
+import commentPage from '@/components/comments/comment.vue'
 const article = ref({
   posts: [],
 });
@@ -193,12 +182,8 @@ const comments = ref([]); //文章的评论
 const userCllection = ref([]); //用户的收藏
 const userLike = ref([]); //用户的点赞
 const conmmentIndex = ref(0)
-/* const load = () => {
-  if(3 + count.value < article.value.posts.length){    
-    count.value++;
-  }
-}; */
-
+const loading = ref(false)
+const bottomVis = ref(false)
 onBeforeRouteUpdate((to,from) => {
   getposts(to.params.name);
 })
@@ -239,8 +224,7 @@ const showComments = (idx, id) => {
 const getposts = async (name) => {
   //得到帖子
   const data = await getPost_(1, '', name === '首页' ? '' : name);
-  article.value.posts = data.records;
-  
+  article.value.posts = data.records; 
 };
 const getUserAttentionId = async () => {
   //得到用户的关注用户Id
@@ -270,6 +254,7 @@ const getUserCollection = async () => {
     userCllection.value = res.map((item) => {
       return item.articleid;
     });
+    store.commit('setUserCollectInfo',userCllection.value)
   }
 };
 const getUserLike = async () => {
@@ -279,71 +264,27 @@ const getUserLike = async () => {
     userLike.value = res.map((item) => {
       return item.articleid;
     });
-  }
-};
-const cllect = async (articleId) => {
-  //点击收藏
-  if (userId) {
-    const idx = userCllection.value.indexOf(articleId);
-    if (idx == -1) {
-      //取消收藏
-      const res = await collect_(userId, articleId, 1);
-      if (res.code == "100") {
-        success("收藏成功");
-        userCllection.value.push(articleId);
-      } else {
-        error("收藏失败");
-      }
-    } else {
-      //收藏
-      const res = await collect_(userId, articleId, -1);
-      userCllection.value.splice(idx, 1);
-    }
-  } else {
-    error("请先登陆");
+    store.commit('setUserLikeInfo',userLike.value)
   }
 };
 
-const like = async (articleId, idx) => {
-  //点赞功能
-  if (userId) {
-    const idx = userLike.value.indexOf(articleId);
-    if (idx == -1) {
-      //点赞
-      const res = await like_(userId, articleId, 1);
-      if (res.code === "100") {
-        success("点赞成功");
-        /* article.value.posts[idx].likeNub++ */
-        userLike.value.push(articleId);
-      } else {
-        error(res.msg);
-      }
-    } else {
-      //取消点赞
-      const res = await like_(userId, articleId, -1);
-      if (res.code === "100") {
-        /* article.value.posts[idx].likeNub -- */
-        userLike.value.splice(idx, 1);
-      } else {
-        error(res.msg);
-      }
-    }
-  } else {
-    error("请先登陆");
-  }
-};
-
-const handleScroll = () => { 
+const handleScroll = () => {   //滚动加载数据
   let scrollTop = document.documentElement.scrollTop || document.body.scrollTop // 滚动条距离顶部的距离
-  let windowHeight = document.documentElement.clientHeight || document.body.clientHeight // 可视区的高度
-  let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight //dom元素的高度，包含溢出不可见的内容
+  let clientHeight = document.documentElement.clientHeight  // 可视区的高度
+  let scrollHeight = document.documentElement.scrollHeight  //dom元素的高度，包含溢出不可见的内容
   // 滚动条到底部的条件scrollTop + windowHeight === scrollHeight
   /* console.log(scrollTop,windowHeight,scrollHeight); */
-  if (scrollHeight === scrollTop + windowHeight) {
-            count.value ++;
+  if (scrollTop + clientHeight >= scrollHeight && count.value + 1 < article.value.posts.length) {
+            loading.value = true
+            bottomVis.value = true
+            setTimeout(() => {
+              count.value ++;
+              loading.value = false
+              bottomVis.value = false
+            }, 2000);
   }
 }
-  document.addEventListener('scroll',function(){
+document.addEventListener('scroll',function(){
       handleScroll()
 })
 </script>
@@ -352,9 +293,6 @@ const handleScroll = () => {
 
 .footer {
   margin-top: 30px;
-}
-.active {
-  color: #f0cc3e;
 }
 a {
   color: #646464;

@@ -1,17 +1,18 @@
 <template>
-  <el-form :model="info" label-width="150px">
+<div class="xg">
+  <el-form :model="info" >
     <div class="update">
       <div class="left">
-        <el-form-item label="手机号：">
+        <el-form-item label="手机号：" label-width="auto"> 
           <el-input  type="text" v-model="info.phoneNum" disabled></el-input>
         </el-form-item>
-        <el-form-item label="昵称：">
+        <el-form-item label="昵&nbsp&nbsp&nbsp称：" label-width="auto">
           <el-input v-model="info.user_name"></el-input>
         </el-form-item>
-        <el-form-item label="年龄：">
+        <el-form-item label="年&nbsp&nbsp&nbsp龄：" label-width="auto">
           <el-input v-model.number="info.age"></el-input>
         </el-form-item>
-        <el-form-item label="性别：">
+        <el-form-item label="性别：" label-width="auto"  >
           <span style="margin-right: 5px">男</span>
           <el-switch
             v-model="info.sex"
@@ -23,17 +24,17 @@
         </el-form-item>
       </div>
       <div class="right">
-        <el-form-item label="密码：" required>
+        <el-form-item label="密码：" required label-width="auto" >
           <el-input
             v-model="info.password"
             type="password"
             show-password
           ></el-input>
         </el-form-item>
-        <el-form-item label="地区：">
+        <el-form-item label="&nbsp&nbsp地区：" label-width="auto">
           <el-input v-model="info.address"></el-input>
         </el-form-item>
-        <el-form-item label="职业：">
+        <el-form-item label="&nbsp&nbsp职业：" label-width="auto">
           <el-input v-model="info.profession"></el-input>
         </el-form-item>
       </div>
@@ -43,6 +44,7 @@
     <el-button @click="changeVisible_">取 消</el-button>
     <el-button type="primary" @click="submit">提 交</el-button>
   </span>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -95,13 +97,17 @@ const submit = async () => {   //提交修改信息
 </script>
 
 <style scoped>
+
 .update {
   display: flex;
 }
-.right {
-  margin-right: 100px;
-}
 .footer {
-  margin-left: 250px;
+  margin-left: 18vw;
+}
+.left .el-form-item{
+  margin-left: 2vw;
+}
+.right .el-form-item{
+  margin-left: 6vw;
 }
 </style>

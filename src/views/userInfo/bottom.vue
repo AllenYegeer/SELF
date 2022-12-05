@@ -91,14 +91,17 @@
         </el-descriptions-item> -->
       </el-descriptions>
     </el-card>
+   
     <el-dialog
       title="个人信息修改"
       v-model="visible"
       :before-close="changeVisible"
       append-to-body="true"
+      class="grxg"
     >
     <updata @changeInfo="changeInfo" @changeVisible="changeVisible" :userInfo="props.info"></updata>
     </el-dialog>
+    
   </div>
 </template>
 
@@ -129,4 +132,9 @@ const changeInfo = (info) =>{
 i {
   margin-right: 3px;
 }
+</style>
+<style>
+  .grxg{
+    min-width: 450px;
+  }
 </style>

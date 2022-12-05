@@ -4,7 +4,6 @@ import { error, success } from "./popup/message";
 const register_ = (data) => {
     return new Promise((resolve,reject) => {
         register(data).then((res) => {
-            console.log(res);
             if (res.data.code === '100') {
                 success('注册成功')
                 sessionStorage.setItem('userId', res.data.data.userid)  //设置用户id

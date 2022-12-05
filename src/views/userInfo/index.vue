@@ -52,9 +52,9 @@ const getUserInfo = async (userId) => {
   userInfo.value.articleNub = res.data.articleNub;
   userInfo.value.followNub = res.data.followNub;
   userInfo.value.headportait = res.data.headportait;
-  userInfo.value.address = res.data.address;
-  userInfo.value.profession = res.data.profession;
-  userInfo.value.password = res.data.password;
+  userInfo.value.address = (res.data.address == '暂无' ? '' : res.data.address)
+  userInfo.value.profession = (res.data.profession == '暂无' ? '' : res.data.profession)
+  userInfo.value.password = res.data.password
 };
 const changeInfo = (info) =>{  //修改信息让页面刷新
   loading()
@@ -62,8 +62,8 @@ const changeInfo = (info) =>{  //修改信息让页面刷新
   userInfo.value.age = info.age
   userInfo.value.gender = (info.sex === false ? '男' : '女')
   userInfo.value.password = info.password
-  userInfo.value.profession = info.profession
-  userInfo.value.address = info.address
+  userInfo.value.profession = (info.profession == '暂无' ? '' : info.profession)
+  userInfo.value.address = (info.address == '暂无' ? '' : info.address)
 }
 const userInfo = ref({
   user_name: "",

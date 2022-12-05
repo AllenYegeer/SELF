@@ -6,7 +6,9 @@ const store = createStore({
             url:'',
             userID:'',
             userInfo:'',
-            userAttendInfo:[]
+            userAttendInfo:[],
+            userLikeInfo:[],
+            userCollectInfo:[],
         }
     },
     mutations:{  //mutations是对象,改变state中的数据
@@ -25,13 +27,35 @@ const store = createStore({
         setUserAttendInfo(state,value){
             state.userAttendInfo = value
         },
+        setUserLikeInfo(state,value){
+            state.userLikeInfo = value
+        },
+        setUserCollectInfo(state,value){
+            state.userCollectInfo = value
+        }
+        ,
         addUserAttendInfo(state,userId){
             state.userAttendInfo.push(userId)
         },
         removeUsedAttendInfo(state,id){
             const idx = state.userAttendInfo.indexOf(id)
             state.userAttendInfo.splice(idx,1)
-        }
+        },
+        addUserLikeInfo(state,articleId){
+            state.userLikeInfo.push(articleId)
+        },
+        removeUserLikeInfo(state, articleId) {
+            const idx = state.userLikeInfo.indexOf(articleId)
+            state.userLikeInfo.splice(idx,1)
+        },
+        addUserCollectInfo(state,articleId){
+            console.log(articleId);
+            state.userCollectInfo.push(articleId)
+        },
+        removeUserCollectInfo(state,articleId){
+            const idx = state.userCollectInfo.indexOf(articleId)
+            state.userCollectInfo.splice(idx,1)
+        },
     },
     //通过 (srcipt中使用) this.$store / (标签中使用)$store.commit('addCount',参数) 调用addCount方法;
     getters:{  //store中的计算属性
