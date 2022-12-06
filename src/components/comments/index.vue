@@ -49,66 +49,11 @@
         <span class="author-name">{{ item.user.username }}</span>
         <span class="author-time">{{ item.comtime.slice(0, 10) }}</span>
       </div>
-      <!-- <div class="icon-btn">
-                <span @click="showReplyInput()"
-                  ><i class="iconfont el-icon-s-comment"></i>11121</span
-                >
-                <i class="iconfont el-icon-caret-top"></i>1113111
-              </div> -->
       <div class="talk-box">
         <p>
           <span class="reply">{{ item.comtext }}</span>
         </p>
       </div>
-      <!-- <div class="reply-box">
-                <div v-for="(reply, j) in item.reply" :key="j" class="author-title">
-                  <el-avatar
-                    class="header-img"
-                    :size="40"
-                    :src="reply.fromHeadImg"
-                  ></el-avatar>
-                  <div class="author-info">
-                    <span class="author-name">1111111</span>
-                    <span class="author-time">111111</span>
-                  </div>
-                  <div class="icon-btn">
-                    <span @click="showReplyInput()"
-                      ><i class="iconfont el-icon-s-comment"></i
-                      >1111</span
-                    >
-                    <i class="iconfont el-icon-caret-top"></i>1111
-                  </div>
-                  <div class="talk-box">
-                    <p>
-                      <span>回复 1111:</span>
-                      <span class="reply">1111</span>
-                    </p>
-                  </div>
-                  <div class="reply-box"></div>
-                </div>
-              </div>
-              <div v-show="1 == 1" class="my-reply my-comment-reply">
-                <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>
-                <div class="reply-info">
-                  <div
-                    tabindex="0"
-                    contenteditable="true"
-                    spellcheck="false"
-                    placeholder="输入评论..."
-                    @input="onDivInput($event)"
-                    class="reply-input reply-comment-input"
-                  ></div>
-                </div>
-                <div class="reply-btn-box">
-                  <el-button
-                    class="reply-btn"
-                    size="medium"
-                    @click="sendCommentReply()"
-                    type="primary"
-                    >发表评论</el-button
-                  >
-                </div>
-              </div> -->
     </div>
     <Page :total="total" :pageSize="6" @changePage="changePage"></Page>
   </el-card>

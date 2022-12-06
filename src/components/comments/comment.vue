@@ -5,7 +5,6 @@
     @click="showComments(index, item.articleid)"
   >
     <i class="iconfont icon-pinglun1" style="font-size: 15px"></i>
-    <!--   {{ commentVisible === index ? comments.length : 0}} -->
   </el-tag>
 </template>
 <script setup>

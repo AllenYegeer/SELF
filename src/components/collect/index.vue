@@ -7,6 +7,7 @@
         active: userCollection.indexOf(Number(articleid)) != -1,
       }"
     ></i>
+    {{(collectNub === 0 ? '' : collectNub)}}
   </el-tag>
 </template>
 
@@ -17,11 +18,12 @@ import { success,error,warn } from '@/utils/popup/message';
 import store from "@/store";
 import { onBeforeMount } from "@vue/runtime-core";
 const props = defineProps(['articleid','collectNum'])
-const collectNum_ = ref(props.collectNum)
 const userId = sessionStorage.getItem('userId')
 const userCollection = ref([])
+const collectNub = ref()
 onBeforeMount(() => {
     userCollection.value = store.state.userCollectInfo
+    collectNub.value = userCollection.value.length
 })
 const cllect = async (articleId) => {
   //点击收藏
@@ -32,8 +34,8 @@ const cllect = async (articleId) => {
       const res = await collect_(userId,articleId, 1);
       if (res.code == "100") {
         success("收藏成功");
-        collectNum_.value ++
         userCollection.value.push(Number(articleId));
+        collectNub.value ++
         store.commit('addUserCollectInfo', Number(articleId))
       } else {
         error("收藏失败");
@@ -41,8 +43,8 @@ const cllect = async (articleId) => {
     } else {
       //收藏
       const res = await collect_(userId, articleId, -1);
-      collectNum_.value --
       userCollection.value.splice(idx, 1);
+      collectNub.value --
       store.commit('removeUserCollectInfo',Number(articleId))
     }
   } else {

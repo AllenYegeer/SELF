@@ -106,11 +106,6 @@ const router = createRouter({
       name: 'waitting',
       component: () => import('../components/waitting/index.vue')
     },
-    {
-      path: '/test',
-      name: 'test',
-      component:() => import('../views/homePage/rank/index.vue')
-    }
   ]
 })
 export default router

@@ -55,7 +55,7 @@
                 @click="showComments"
               >
                 <i class="iconfont icon-pinglun1" style="font-size: 15px"></i>
-                {{(articInfo.comments.length === 0 ? 0 : articInfo.comments.length)}}
+                {{(articInfo.comments.length === 0 ? '' : articInfo.comments.length)}}
               </el-tag>
             </span>
           </div>

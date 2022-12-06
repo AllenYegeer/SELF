@@ -11,7 +11,7 @@
         active: userLikeInfo.indexOf(Number(articleid)) != -1,
       }"
     ></i>
-    {{(likeNub_  > 0 ? likeNub_ : 0)}}
+    {{(likeNub_  != 0 ? likeNub_ : '')}}
   </el-tag>
 </template>
 <script setup>

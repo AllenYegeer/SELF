@@ -5,9 +5,7 @@
     v-for="(item, index) in article.posts.slice(0,count)"
     :key="item.articleid"
   >
-    <el-card style="margin:3vh 1vw; background: #ffffff"
-    v-if="item.user.userid != nowUserId"
-    >
+    <el-card style="margin:3vh 1vw; background: #ffffff">
       <div style="min-height: 280px">
         <router-link :to="'/homePage/articleDetails/' + item.articleid"><h3>{{ item.head }}</h3></router-link>
         <el-divider /><!--这里是分割线-->
@@ -85,7 +83,6 @@
           <span style="padding-left: 5px; margin-left: 10px; margin-top: 10px">
             <collectpage
               :articleid="item.articleid"
-              :collectNum="item.collectNum"
             ></collectpage> 
           </span>
 
@@ -98,7 +95,7 @@
                 @click="showComments(index, item.articleid)"
               >
                 <i class="iconfont icon-pinglun1" style="font-size: 15px"></i>
-              <!--   {{ commentVisible === index ? comments.length : 0}} -->
+                <!-- {{ commentVisible === index ? comments.length : 0}} -->
               </el-tag>
             </span>
           </el-tooltip>
@@ -224,7 +221,7 @@ const showComments = (idx, id) => {
 const getposts = async (name) => {
   //得到帖子
   const data = await getPost_(1, '', name === '首页' ? '' : name);
-  article.value.posts = data.records; 
+  article.value.posts = data.records.reverse(); 
 };
 const getUserAttentionId = async () => {
   //得到用户的关注用户Id
