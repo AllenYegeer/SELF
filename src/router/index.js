@@ -92,20 +92,25 @@ const router = createRouter({
     {
       path: '/enterTOHome',   //轮播图
       name: 'enterTOHome',
-      component: () => import('../components/sideShow/index.vue')
+      component: () => import('@/components/sideShow/index.vue')
     }
     ,
     {
       path:'/comments',
       name: 'comments',
-      component: () => import('../components/comments/index.vue')
+      component: () => import('@/components/comments/index.vue')
     }
     ,
     {
       path:'/waitting',
       name: 'waitting',
-      component: () => import('../components/waitting/index.vue')
+      component: () => import('@/components/waitting/index.vue')
     },
+    {
+      path: '/test',
+      name: 'test',
+      component: () => import('@/views/myCollection/index.vue')
+    }
   ]
 })
 export default router

@@ -10,6 +10,7 @@ const register_ = (data) => {
                 sessionStorage.setItem('imgUrl', res.data.data.headportait) //设置头像url
                 sessionStorage.setItem('userName', res.data.data.username)  //设置用户名
                 resolve(res.data)
+                window.location.reload()
             } else {
                 error(res.data.msg)
                 reject(res.data)

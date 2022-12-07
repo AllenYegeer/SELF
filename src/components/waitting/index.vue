@@ -1,5 +1,7 @@
 <template>
-     <div class=" animation"></div>
+     <div class="animation">
+        <img src="@/assets/img/login.gif" alt="">
+     </div>
      <el-progress
       :text-inside="true"
       :stroke-width="24"
@@ -7,7 +9,7 @@
       status="success"
       style="width:50vw;
       margin:0 auto;
-      transform: translateY(5vh);
+      transform: translateY(-30vh);
       "
     />
 </template>
@@ -20,7 +22,9 @@ import router from "@/router";
             val.value += 10
         }
         if (val.value === 100){
-            window.location.replace('/home')
+            setTimeout(() => {
+                window.location.replace('/home')    
+            },500)       
         }
     },500)
 </script>
@@ -31,9 +35,9 @@ body {
 }
 .animation {
             height: 350px;
-            background-image: url('../../assets/img/2.png');
-            margin: 50px auto;
-            animation: run 1s step-end infinite;
+           /*  background-image: url('../../assets/img/2.png'); */
+            margin: 20vh 40vw;
+            /* animation: run 1s step-end infinite; */
         }
         @keyframes run {
             0% {

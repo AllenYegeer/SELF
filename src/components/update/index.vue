@@ -29,6 +29,7 @@
             v-model="info.password"
             type="password"
             show-password
+            placeholder="新密码/旧密码"
           ></el-input>
         </el-form-item>
         <el-form-item label="&nbsp&nbsp地区：" label-width="auto">

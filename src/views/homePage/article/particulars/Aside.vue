@@ -24,7 +24,7 @@
       </div>
     </div>
   </div>
-  <div class="footer">
+  <div class="footer" v-if="(Number(userId_) !== Number(props.userId))">
     <el-button type="primary" v-if="attentVis" @click="Attend">
       <el-icon><Plus /></el-icon>
       <span>关注他</span>
@@ -57,8 +57,7 @@ const props = defineProps([
 const followNub_ = ref();
 onBeforeMount(() => {
   setTimeout(() => {
-    attentVis.value =
-      store.state.userAttendInfo.indexOf(props.userId) === -1 ? true : false;
+    attentVis.value = store.state.userAttendInfo.indexOf(props.userId) === -1 ? true : false;
     followNub_.value = props.followNub;
   }, 500);
 });

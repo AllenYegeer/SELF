@@ -13,7 +13,8 @@
 
           <el-form-item>
               <div class="identify" style="display:flex">
-                <el-input :prefix-icon="Key" type="text" placeholder="验证码" v-model="login_info.code" autocomplete="off" clearable
+                <el-input :prefix-icon="Key" type="text" placeholder="验证码" 
+                v-model="login_info.code" autocomplete="off" clearable
                 style="height:36px"
                 ></el-input>
                 <Identity  @click="refreshCode" :identifyCode="identifyCode" 
@@ -46,7 +47,7 @@ import {Iphone,Lock,User,Key } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 import Identity from '../../../components/Identify/index.vue';
 const emit = defineEmits(['changeVisible'])
-const login_info = ref({
+const login_info = ref({  //登录信息
   phone: "",
   password: "",
   code:""
@@ -54,7 +55,7 @@ const login_info = ref({
 let identifyCodes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 let identifyCode = ref()   //验证码
 const reset = () => {   //重置
-  Object.keys(login_info).forEach(key => {
+  Object.keys(login_info.value).forEach((key) => {
     login_info.value[key] = ''
   })
 }
@@ -70,15 +71,15 @@ const clickLogin = async () => {  //点击登录
         phone: login_info.value.phone,
         password: login_info.value.password
       })
-        if (res.code === '100'){
+      /*   if (res.code === '100'){
         loginSuccess()
       }else{
-      loginFali()
-      }
+        loginFali()
+      } */
    }
 }
   
-const loginSuccess = () => {
+/* const loginSuccess = () => {
     Object.keys(login_info).forEach((key => {
           login_info[key] = ''
     }))
@@ -88,14 +89,14 @@ const loginSuccess = () => {
 
 const loginFali = (msg) => {
     error(msg)
-}
+} */
 
 //验证码
-const randomNum = (min, max) => {
+const randomNum = (min, max) => {   
     return Math.floor(Math.random() * (max - min) + min)
 }
  
-const makeCode = (o, l) => {
+const makeCode = (o, l) => {  //产生验证码
     for (let i = 0; i < l; i++) {
         identifyCode.value += o[
             randomNum(0, o.length)
@@ -103,7 +104,7 @@ const makeCode = (o, l) => {
     }
 }
  
-const refreshCode = () => {
+const refreshCode = () => {  //刷新验证码
     identifyCode.value = "";
     makeCode(identifyCodes, 4);
 }

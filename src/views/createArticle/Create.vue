@@ -138,7 +138,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         error('请登录')
       }
     } else {
-       //如果有空，则发不了
+       //如果为空，则发不了
       error("请按规定填写内容")
     }
   });

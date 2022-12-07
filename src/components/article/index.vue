@@ -48,11 +48,11 @@ onBeforeMount(() => {
 
 const getUserCollection =  async () => {  //得到用户的收藏信息
     const res = await getUserCollection_(userId.value)
-    articles.value = res
+    articles.value = res.reverse()
 }
 const getUserLike = async () => {   //得到用户的点赞信息
     const res = await getUserLike_(userId.value)
-    articles.value = res
+    articles.value = res.reverse()
 }
 const changeIdx = (num) =>{ 
     idx.value = num

@@ -1,39 +1,6 @@
 <template>
-  <div class="fanorfollow_box">
-    <div class="fanorfollow" v-for="(item, index) in allData">
-      <div class="fanorfollow_left">
-        <img class="fanorfollow_img" v-image-preview :src="item.avatar" />
-      </div>
-      <div class="fanorfollow_info">
-        <div class="fanorfollow_info_top">
-          <span
-            style="color: #666; max-width: 180px"
-            @click="personal(item.id)"
-            >{{ item.nickname }}</span
-          >
-        </div>
-        <div class="fanorfollow_info_bottom">
-          <span @click="personal(item.id)">{{ item.design }}</span>
-        </div>
-      </div>
-      <div class="fanorfollow_botton">
-        <el-button
-          @click="follow(item.id)"
-          type="primary"
-          size="small"
-          round
-          icon="el-icon-check"
-          v-text="isfollowid.indexOf(item.id) > -1 ? '已关注' : '关注'"
-        ></el-button>
-      </div>
-    </div>
-    <div>
-      <el-empty
-        v-if="allData.length == 0"
-        :image-size="250"
-        description="这里什么都没有哟"
-      ></el-empty>
-    </div>
+  <div>
+    <img src="../../assets/img/login.gif" alt="">
   </div>
 </template>
 <script setup>

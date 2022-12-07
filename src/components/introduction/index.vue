@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-    <div class="footer">
+    <div class="footer" v-if="(Number(userId) !== props.id)">
         <el-button type="primary" @click="attenion" v-if="props.userAttenionId.indexOf(props.id) === -1">
           <el-icon><Plus /></el-icon>
           <span>关注他</span>
@@ -60,7 +60,7 @@ import {attent_} from '@/utils/user/attent'
 import {success,error,warn} from '@/utils/popup/message'
 import store from '../../store'
 const props = defineProps(['userAttenionId','id'])
-var userId
+const userId = sessionStorage.getItem('userId')
 const userInfo = ref()
 const visible = ref()
 const info = ref(
@@ -73,7 +73,6 @@ const info = ref(
   }
 )
 const attenion = async () => {   
-  userId = sessionStorage.getItem('userId')
   if (userId){
     const idx = props.userAttenionId.indexOf(props.id)
     if (idx == -1){

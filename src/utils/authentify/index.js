@@ -11,7 +11,7 @@ function isPassword(val) {  //密码验证
     }
 }
 
-function isPhone(val){
+function isPhone(val){   //手机验证
     const reg = /^[1][3,4,5,7,8][0-9]{9}$/;
     if (reg.exec(val)) {
         return true

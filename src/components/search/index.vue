@@ -238,7 +238,7 @@ const showComments = (idx, id) => {
 const getposts = async (name) => {
   //得到帖子 
   const {data:res} = await search_(name)
-   searchRes.value = res
+   searchRes.value = res.reverse()
 };
 const getUserAttentionId = async () => {
   //得到用户的关注用户Id

@@ -1,5 +1,5 @@
 <template>
-  <el-carousel indicator-position="none" height="100vh">
+  <el-carousel indicator-position="none" height="100vh" interval="1500" >
     <el-carousel-item v-for="item in imgList" :key="item.id">
       <div class="pic_item">
         <img

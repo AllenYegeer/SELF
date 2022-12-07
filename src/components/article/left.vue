@@ -40,7 +40,7 @@
       </div>
     </div>
     <el-divider></el-divider>
-    <div class="footer">
+    <div class="footer" v-if="(Number(userId) !== Number(nowUserId))">
       <el-button type="primary" @click="Attend" v-if="attentVis">
         <el-icon><Plus /></el-icon>
         <span>关注他</span>

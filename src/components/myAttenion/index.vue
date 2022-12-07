@@ -18,7 +18,7 @@
             >
           </div>
           <div class="fanorfollow_info_bottom">
-            <img src="@/assets/logo/v.png" class="user-v-img" />
+            <img src="@/assets/logo/v.png" class="user-v-img" />       
             <span class="user-v-font">优质媒体作者</span>
           </div>
         </div>
